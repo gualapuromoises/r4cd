@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Moisés Gualapuro">
+<meta name="dcterms.date" content="2023-02-16">
+
+<title>R para computación de altas prestaciones</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="funciones_files/libs/clipboard/clipboard.min.js"></script>
+<script src="funciones_files/libs/quarto-html/quarto.js"></script>
+<script src="funciones_files/libs/quarto-html/popper.min.js"></script>
+<script src="funciones_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="funciones_files/libs/quarto-html/anchor.min.js"></script>
+<link href="funciones_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="funciones_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="funciones_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="funciones_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="funciones_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="funciones_files/libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="funciones_files/libs/jquery-1.12.4/jquery.min.js"></script>
+<script src="funciones_files/libs/d3-3.5.6/d3.min.js"></script>
+<link href="funciones_files/libs/profvis-0.3.6.9000/profvis.css" rel="stylesheet">
+<script src="funciones_files/libs/profvis-0.3.6.9000/profvis.js"></script>
+<script src="funciones_files/libs/profvis-0.3.6.9000/scroll.js"></script>
+<link href="funciones_files/libs/highlight-6.2.0/textmate.css" rel="stylesheet">
+<script src="funciones_files/libs/highlight-6.2.0/highlight.js"></script>
+<script src="funciones_files/libs/profvis-binding-0.3.7/profvis.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#contenido" id="toc-contenido" class="nav-link active" data-scroll-target="#contenido">CONTENIDO</a></li>
+  <li><a href="#resultados-de-aprendizaje" id="toc-resultados-de-aprendizaje" class="nav-link" data-scroll-target="#resultados-de-aprendizaje">1. Resultados de aprendizaje</a></li>
+  <li><a href="#funciones" id="toc-funciones" class="nav-link" data-scroll-target="#funciones">2. Funciones</a>
+  <ul class="collapse">
+  <li><a href="#funciones-precargadas-en-r" id="toc-funciones-precargadas-en-r" class="nav-link" data-scroll-target="#funciones-precargadas-en-r">Funciones precargadas en R</a></li>
+  <li><a href="#funciones-simples" id="toc-funciones-simples" class="nav-link" data-scroll-target="#funciones-simples">Funciones simples</a></li>
+  <li><a href="#función-simple-2" id="toc-función-simple-2" class="nav-link" data-scroll-target="#función-simple-2">Función simple 2</a></li>
+  <li><a href="#función-con-estrucuturas-de-control" id="toc-función-con-estrucuturas-de-control" class="nav-link" data-scroll-target="#función-con-estrucuturas-de-control">Función con estrucuturas de control</a></li>
+  </ul></li>
+  <li><a href="#funciones-apply" id="toc-funciones-apply" class="nav-link" data-scroll-target="#funciones-apply">2. Funciones apply</a>
+  <ul class="collapse">
+  <li><a href="#repaso" id="toc-repaso" class="nav-link" data-scroll-target="#repaso">2.1. Repaso</a>
+  <ul class="collapse">
+  <li><a href="#estructura-de-una-función" id="toc-estructura-de-una-función" class="nav-link" data-scroll-target="#estructura-de-una-función">2.1.1. Estructura de una función</a></li>
+  <li><a href="#librería-dplyr" id="toc-librería-dplyr" class="nav-link" data-scroll-target="#librería-dplyr">2.1.2 Librería <code>dplyr</code></a></li>
+  </ul></li>
+  <li><a href="#familia-apply" id="toc-familia-apply" class="nav-link" data-scroll-target="#familia-apply">2.2 Familia <code>*apply</code></a>
+  <ul class="collapse">
+  <li><a href="#función-apply" id="toc-función-apply" class="nav-link" data-scroll-target="#función-apply">2.2.1. Función <code>apply()</code></a></li>
+  <li><a href="#funciones-lapply-y-sapply" id="toc-funciones-lapply-y-sapply" class="nav-link" data-scroll-target="#funciones-lapply-y-sapply">2.2.2. Funciones <code>lapply()</code> y <code>sapply()</code></a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#programación-funcional" id="toc-programación-funcional" class="nav-link" data-scroll-target="#programación-funcional">3. Programación Funcional</a>
+  <ul class="collapse">
+  <li><a href="#funcionales" id="toc-funcionales" class="nav-link" data-scroll-target="#funcionales">3.1. Funcionales</a></li>
+  <li><a href="#closures" id="toc-closures" class="nav-link" data-scroll-target="#closures">3.2. Closures</a></li>
+  </ul></li>
+  <li><a href="#profiling-y-benchmarking" id="toc-profiling-y-benchmarking" class="nav-link" data-scroll-target="#profiling-y-benchmarking">4. Profiling y Benchmarking</a>
+  <ul class="collapse">
+  <li><a href="#temporizador-microbenchmark" id="toc-temporizador-microbenchmark" class="nav-link" data-scroll-target="#temporizador-microbenchmark">4.1 Temporizador <code>microbenchmark</code></a></li>
+  <li><a href="#visualizador-de-tiempos-profvis" id="toc-visualizador-de-tiempos-profvis" class="nav-link" data-scroll-target="#visualizador-de-tiempos-profvis">4.2. Visualizador de tiempos: <code>profvis</code></a></li>
+  </ul></li>
+  <li><a href="#actividades" id="toc-actividades" class="nav-link" data-scroll-target="#actividades">5. Actividades</a>
+  <ul class="collapse">
+  <li><a href="#aplicación-de-apply" id="toc-aplicación-de-apply" class="nav-link" data-scroll-target="#aplicación-de-apply">5.1. Aplicación de <code>*apply</code></a></li>
+  <li><a href="#aplicación-de-microbenchmark-y-profvis" id="toc-aplicación-de-microbenchmark-y-profvis" class="nav-link" data-scroll-target="#aplicación-de-microbenchmark-y-profvis">5.2. Aplicación de <code>microbenchmark</code> y <code>profvis</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><strong>R para computación de altas prestaciones</strong></h1>
+<p class="subtitle lead"><strong>1.3 Funciones</strong></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Moises Gualapuro </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2023-02-16</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p><img src="./img/ikiam.png" class="img-fluid"></p>
+<p>Moisés Gualapuro - <code>moises.gualapuro@ikiam.edu.ec</code> - Universidad Regional Amazónica IKIAM, Tena (Ecuador)</p>
+<section id="contenido" class="level1">
+<h1>CONTENIDO</h1>
+</section>
+<section id="resultados-de-aprendizaje" class="level1">
+<h1>1. Resultados de aprendizaje</h1>
+<p>Al finalizar la unidad, el estudiante será capaz de:</p>
+<ul>
+<li><p>Escribir funciones para analizar datos.</p></li>
+<li><p>Utilizar funciones para analizar datos.</p></li>
+</ul>
+</section>
+<section id="funciones" class="level1">
+<h1>2. Funciones</h1>
+<p>Existen varias funciones pre-cargadas en R las cuales puede ser utilizadas a la vez para esscribir nuevas funciones.</p>
+<p>Se tiene operaciones para las cuales no se tiene funciones definidas, por lo tanto deben ser escritas. Una función es un bloque de instrucciones que pueden ser utilizadas continuamente en un programa, es decir, permite <strong>automatizar operaciones</strong>. Generar funciones es más productivo que copiar y pegar las instrucciones cada vez que se necesita, por lo tanto tiene las siguientes ventajas:</p>
+<ol type="1">
+<li><p>Se asigna un identificador que permite reconocer lo que realiza la función.</p></li>
+<li><p>Se requiere pocos cambios, en general solamente los argumentos.</p></li>
+<li><p>Se evita errores accidentales que pueden ocurrir al copiar y pegar.</p></li>
+<li><p>Se puede utilizar para escribir nuevas funciones.</p></li>
+<li><p>Se tiene una forma compacta para operar.</p></li>
+<li><p>Facilita el aprendizaje del lenguaje de programación.</p></li>
+</ol>
+<p>La estructura de una función es la siguiente:</p>
+<pre><code>nombreFuncion &lt;- function(argumento1, argumento2, ...){
+  instruciones
+  return(resultado)
+}</code></pre>
+<p>Se requiere una función cuando se repite (copia y pega) una instrucción por más de tres veces. Como en el siguiente caso ejemplo, donde se busca calcular la reescalar un valor con la fórmula:</p>
+<p><span class="math display">\[x_{i} = \dfrac{x-mean(x)}{sd(x)}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="at">b =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> <span class="at">c =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="at">d =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>a <span class="ot">&lt;-</span> (df<span class="sc">$</span>a <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> (<span class="fu">sd</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>b <span class="ot">&lt;-</span> (df<span class="sc">$</span>b <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>b, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> (<span class="fu">sd</span>(df<span class="sc">$</span>a, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="co"># error</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>c <span class="ot">&lt;-</span> (df<span class="sc">$</span>c <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> (<span class="fu">sd</span>(df<span class="sc">$</span>c, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>d <span class="ot">&lt;-</span> (df<span class="sc">$</span>d <span class="sc">-</span> <span class="fu">mean</span>(df<span class="sc">$</span>d, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> (<span class="fu">sd</span>(df<span class="sc">$</span>d, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>En este ejemplo, se repite una instrucción que podríamos optimizar generando una función. Antes de continuar vamos a revisar funciones con las cuales tenemos mayor familiaridad.</p>
+<section id="funciones-precargadas-en-r" class="level2">
+<h2 class="anchored" data-anchor-id="funciones-precargadas-en-r">Funciones precargadas en R</h2>
+<p>Se tiene muchas funciones que ya están predefinidas en R, aquí algunas de ellas:</p>
+<table class="table">
+<caption>Ejemplos de funciones predefinidas en R</caption>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 41%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Función</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Numérico</strong></td>
+<td><code>abs(x)</code></td>
+<td>Valor absoluto [ <code>abs(-32.3)=32.3</code>]</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>sqrt(x)</code></td>
+<td>Raíz cuadrada [ <code>sqrt(25)=5</code>]</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>ceiling(x)</code></td>
+<td>Entero superior [ <code>ceiling(2.3)=3</code>]</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>floor(x)</code></td>
+<td>Entero inferior [ <code>floor(2.3)=2</code>]</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>trunc(x)</code></td>
+<td>Truncar, es seleccionar solamente el valor entero [ <code>trunc(2.3)=2</code>]</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>round(x, digits=n)</code></td>
+<td>Redondear [ <code>round(2.33273427247, digits=4)=2.3327</code>]</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>signif(x, digits=n)</code></td>
+<td>Cifras significativas [ <code>signif(2.33273427247, digits=4)=2.3327</code>]</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>cocs(x), sin(x), tan(x)</code></td>
+<td>Funciones trigonométricas [ <code>cos(pi)=-1</code>]</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>log(x), lo10(x), log2(x), log(x, base)</code></td>
+<td>Logaritmos [ <code>logb(81 , 3)=4</code>]</td>
+</tr>
+<tr class="even">
+<td><strong>Texto</strong></td>
+<td><code>substr(x, star=n1, stop=n2)</code></td>
+<td><p>Extraer o reemplazar un “subtexto” en un vector de exto, <code>x&lt;- "Bienvenido al curso"</code></p>
+<p><code>substr(x, 4, 12)="nvenido a"</code></p>
+<p><code>substr(x, 4, 12)&lt;-"correran al mar", x = "Biecorreran l curso"</code></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>grep(patrón, x ignore.case = FALSE, fixed=FALSE)</code></td>
+<td><p>Busca un patrón en un vector de textos y devuelve los índice donde encuentra el patrón.</p>
+<p><code>x&lt;- c("El", "curso", "con", "R")</code></p>
+<p><code>grep("o", x, fixed = TRUE) = 2 3</code>]</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong><code>sub(</code></strong><em><code>patrón</code></em><strong><code>,</code></strong> <em><code>reemplazo</code></em><strong><code>,</code></strong> <em><code>x</code></em><strong><code>, ignore.case =</code></strong><code>FALSE, fixed=FALSE)</code></td>
+<td><p>Busca un patrón en un texto y reemplaza.</p>
+<p><code>x&lt;- c("El", "curso", "con", "R")</code></p>
+<p><code>sub("r", "*", x, fixed = TRUE) = c("El", "cu*so", "con", "R")</code></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>strsplit(x, separador)</code></td>
+<td><p>Separa los caracteres de un texto con separador.</p>
+<p><code>x&lt;- "Bienvenidos"</code></p>
+<p><code>strsplit(x, "")="B" "i" "e" "n" "v" "e" "n" "i" "d" "o" "s"</code></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>paste(x, sep="")</code></td>
+<td><p>Concatena elementos utilizando un separador.</p>
+<p><code>paste("hola", "mundo", sep= "*")="hola*mundo"</code></p>
+<p><code>paste("hola", 1:3, sep= "-")="hola-1" "hola-2" "hola-3"</code></p>
+<p><code>paste("Hoy es", date(), sep= ":: ")="Hoy es:: Tue Oct  6 08:24:39 2020"</code></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>toupper(x)</code></td>
+<td><p>Convierte un texto en mayúsculas</p>
+<p><code>toupper("Quito")="QUITO"</code></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>tolower(x)</code></td>
+<td><p>Convierte un texto en minúsculas</p>
+<p><code>tolower("Este LUNES")="este lunes"</code></p></td>
+</tr>
+<tr class="odd">
+<td>Estadística</td>
+<td><code>dnorm(x)</code></td>
+<td>Función de densidad normal</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>pnorm(x)</code></td>
+<td>Probabilidad acumulativa normal de x</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>qnorm(x)</code></td>
+<td>Quantil normal</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>rnorm(n, m=0, sd =1)</code></td>
+<td>Desviación normal aleatorio <code>n</code>, con promedio <code>m</code> y desviación estándar <code>sd</code>.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>mean(x, trim=0, na.rm=FALSE)</code></td>
+<td><p>Promedio de un vector <code>x</code>, donde <code>na.rm=TRUE</code> remueve valores <code>NaN</code> y <code>trim=0.05</code>elimina el 5% de valores extremos</p>
+<p><code>mean(x, trim=0.05, na.rm=TRUE)</code></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>sd(x)</code></td>
+<td>Calcula la desviación estandar de un conjunto de valores.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>median(x)</code></td>
+<td>Calcula la media de un conjunto de valores.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>range(x)</code></td>
+<td>Calcula el rango de un conjunto de valores.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>quantile(x, prob)</code></td>
+<td>Calcula el quantil de un conjunto de valores, dad una probabilidad (entre 0 y 1).</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>sum(x)</code></td>
+<td>Calcula la suma de un conjunto de valores.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>min(x)</code></td>
+<td>Calcula el valor mínimo de un conjunto de valores.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>max(x)</code></td>
+<td>Calcula el valor máximo de un conjunto de <strong>valores.</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>Otras funciones</strong></td>
+<td><code>seq(desde, hasta, paso)</code></td>
+<td>Genera un vector con una secuencia de números dados el valor inicial, el valor final y el “paso” que se define.</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>rep(x, n)</code></td>
+<td>Genera un vector donde el valor <code>x</code> se repite por <code>n</code> veces.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>cut(x, n)</code></td>
+<td>Divide una variable continua <code>x</code> en factores de <code>n</code> niveles.</td>
+</tr>
+</tbody>
+</table>
+<p>Se tiene más funciones predeterminadas con las cuales se puede ir familiarizando a medida que se entrena en R.</p>
+</section>
+<section id="funciones-simples" class="level2">
+<h2 class="anchored" data-anchor-id="funciones-simples">Funciones simples</h2>
+<p>A continuación se crea la función <code>cuadrado</code>, donde el único argumento es la variable <code>x</code> y el resultado es <span class="math display">\[y = x^{2}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Forma de operar extensa</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> x<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> x<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> x<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Forma de operar con una función </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cuadrado <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">=</span> x<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(y)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Se evalúa la función para algún valor</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cuadrado</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cuadrado</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">78</span>,<span class="dv">934</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]      1      4      9     16     25     36     49   6084 872356</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cuadrado</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="fl">0.2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]   1.00   1.44   1.96   2.56   3.24   4.00   4.84   5.76   6.76   7.84
+[11]   9.00  10.24  11.56  12.96  14.44  16.00  17.64  19.36  21.16  23.04
+[21]  25.00  27.04  29.16  31.36  33.64  36.00  38.44  40.96  43.56  46.24
+[31]  49.00  51.84  54.76  57.76  60.84  64.00  67.24  70.56  73.96  77.44
+[41]  81.00  84.64  88.36  92.16  96.04 100.00</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cuadrado</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">23</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]   1   4   9  16  25  36  49  64  81 100 121 144 169 196 225 256 289 324 361
+[20] 400 441 484 529</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Forma corta de la función cuadrado</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(<span class="cf">function</span>(x) x<span class="sc">**</span><span class="dv">2</span>)(<span class="dv">2</span>) <span class="co"># Evalúa para el valor 2 la función x^2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Otra forma corta</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cuadrado2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">**</span><span class="dv">2</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cuadrado2</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">476</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]      1      4      9 226576</code></pre>
+</div>
+</div>
+<p>Cuando se crean las funciones se pueden predefinir los valores de los parámetros, es decir si no se coloca un valor, entonces tomará el valor predeterminado.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># función potencia</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>potencia <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">1</span>){</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  pot <span class="ot">=</span> x<span class="sc">**</span>y</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(pot)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Argumentos sin valores asignados </span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">potencia</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definiendo el valor para un argumento</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">potencia</span>(<span class="at">x=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">potencia</span>(<span class="at">y=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definiendo valores para ambos argumentos</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">potencia</span>(<span class="at">x=</span><span class="dv">5</span>, <span class="at">y=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 125</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">potencia</span>(<span class="dv">5</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 125</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Función potencia aplicado a vectores</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">potencia</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>), <span class="at">y=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]    1   16   81  256  625 1296</code></pre>
+</div>
+</div>
+</section>
+<section id="función-simple-2" class="level2">
+<h2 class="anchored" data-anchor-id="función-simple-2">Función simple 2</h2>
+<p>Para aplicar la función reescalar, se requiere utilizar la fórmula previamente indicada</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>),</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a> <span class="at">b =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a> <span class="at">c =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a> <span class="at">d =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>reescalar <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">=</span> (x<span class="sc">-</span><span class="fu">mean</span>(x))<span class="sc">/</span><span class="fu">sd</span>(x)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(y)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="fu">reescalar</span>(df<span class="sc">$</span>a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  0.24882869  1.49273511 -0.27334674 -0.31996975 -0.08662454 -0.34126144
+ [7]  1.65135331 -1.03409026  0.25796557 -1.59558994</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>colnamesdf <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(df)){</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(colnamesdf[i], <span class="fu">reescalar</span>(df[,i])))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "a 0.248828685673739"  "a 1.49273510583554"   "a -0.273346742854892"
+ [4] "a -0.319969749380182" "a -0.086624540589784" "a -0.341261435663377"
+ [7] "a 1.65135331124002"   "a -1.03409025936431"  "a 0.257965569332164" 
+[10] "a -1.59558994422892" 
+ [1] "b 0.739731008869042"     "b -0.000129555781302718"
+ [3] "b -1.75353465696443"     "b -0.731903489773139"   
+ [5] "b -0.0140992592654672"   "b 1.2380011644406"      
+ [7] "b 1.31355906887389"      "b -1.17193202480639"    
+ [9] "b -0.072721331582955"    "b 0.453029075990141"    
+ [1] "c 0.952827551141346"  "c 0.595563808157914"  "c 0.156256506197576" 
+ [4] "c -0.738374205054134" "c 1.81943743122202"   "c 0.21310317815081"  
+ [7] "c -1.33861601214521"  "c -1.17863744005629"  "c -0.748232801404455"
+[10] "c 0.266671983790429" 
+ [1] "d -0.243551967718655" "d 0.184477700340985"  "d -0.168223354093679"
+ [4] "d -0.166349972725316" "d -0.228147989372977" "d -2.32980014154739" 
+ [7] "d 0.227005846966469"  "d 1.63881811675238"   "d 0.691129209254265" 
+[10] "d 0.394642552143914" </code></pre>
+</div>
+</div>
+</section>
+<section id="función-con-estrucuturas-de-control" class="level2">
+<h2 class="anchored" data-anchor-id="función-con-estrucuturas-de-control">Función con estrucuturas de control</h2>
+<p>Cuando se desea clasificar o agregar, se puede utilizar una función con estrucuturas de control.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>aspirantes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Aspirante =</span> <span class="fu">paste</span>(<span class="st">"Aspirante"</span>,<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">20</span>,<span class="at">by=</span><span class="dv">2</span>)),</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Edad =</span> <span class="fu">sample</span>(<span class="dv">15</span><span class="sc">:</span><span class="dv">30</span>,<span class="dv">10</span>,<span class="cn">FALSE</span>),</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Talla =</span> <span class="fu">sample</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">200</span>,<span class="dv">10</span>,<span class="cn">FALSE</span>),</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">TipoSangre =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"O"</span>),<span class="dv">10</span>,<span class="cn">TRUE</span>),</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">Instruccion =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Primaria"</span>, <span class="st">"Secundaria"</span>, <span class="st">"TercerNivel"</span>, <span class="st">"CuartoNivel"</span>),<span class="dv">10</span>,<span class="cn">TRUE</span>) </span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>                         )</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>item_promedio <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    total <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(x)) {</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>      total <span class="ot">&lt;-</span> total <span class="sc">+</span> x[i] <span class="sc">/</span> n</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    total</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="fu">item_promedio</span>(aspirantes<span class="sc">$</span>Edad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 23</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="funciones-apply" class="level1">
+<h1>2. Funciones apply</h1>
+<section id="repaso" class="level2">
+<h2 class="anchored" data-anchor-id="repaso">2.1. Repaso</h2>
+<section id="estructura-de-una-función" class="level3">
+<h3 class="anchored" data-anchor-id="estructura-de-una-función">2.1.1. Estructura de una función</h3>
+<p>Las funciones tienen un nombre, argumentos, instrucciones y resultados.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>    nombre_funcion <span class="ot">&lt;-</span> <span class="cf">function</span>(arg1, arg2, ...){</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>      instruccion1</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>      instruccion2</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>      ...</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(resultado)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Por ejemplo el cálculo del perímetro de un conjunto de rectángulos con diferentes valores de ancho y largo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># medidas de rectángulos</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>anchos <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>largos <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">4</span>,<span class="dv">9</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># función perímetro</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>perimetro <span class="ot">&lt;-</span> <span class="cf">function</span>(x,y){</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  perimetro <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span>(x<span class="sc">+</span>y)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(perimetro)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(anchos)){</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  per_temp <span class="ot">=</span> <span class="fu">perimetro</span>(anchos[i], largos[i])</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Ancho: "</span>, anchos[i], <span class="st">", Largo: "</span>, largos[i],</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">", Perímetros:"</span>, per_temp, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ancho:  1 , Largo:  4 , Perímetros: 10 
+Ancho:  2 , Largo:  5 , Perímetros: 14 
+Ancho:  3 , Largo:  6 , Perímetros: 18 
+Ancho:  4 , Largo:  7 , Perímetros: 22 
+Ancho:  5 , Largo:  8 , Perímetros: 26 
+Ancho:  6 , Largo:  9 , Perímetros: 30 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># funciones</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>cuadrado <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>desviacion <span class="ot">&lt;-</span> <span class="cf">function</span>(x) x<span class="sc">-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">20000000</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co"># forma anidada</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>(<span class="fu">cuadrado</span>(<span class="fu">desviacion</span>(x))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2886923</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forma individual</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">desviacion</span>(x) </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">cuadrado</span>(res) </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">mean</span>(res) </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(res) </span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2886923</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># forma concatenada</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">desviacion</span>() <span class="sc">%&gt;%</span> <span class="fu">cuadrado</span>() <span class="sc">%&gt;%</span> <span class="fu">mean</span>() <span class="sc">%&gt;%</span> <span class="fu">sqrt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2886923</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tiempos de funciones</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tiempo forma anidada</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>tiempo.anidada <span class="ot">&lt;-</span> <span class="fu">system.time</span>( <span class="fu">sqrt</span>(<span class="fu">mean</span>(<span class="fu">cuadrado</span>(<span class="fu">desviacion</span>(x)))) )</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># tiempo forma individual</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>tiempo.individual1 <span class="ot">&lt;-</span> <span class="fu">system.time</span>( res <span class="ot">&lt;-</span> <span class="fu">desviacion</span>(x) )</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>tiempo.individual2 <span class="ot">&lt;-</span> <span class="fu">system.time</span>( res <span class="ot">&lt;-</span> <span class="fu">cuadrado</span>(res) )</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>tiempo.individual3 <span class="ot">&lt;-</span> <span class="fu">system.time</span>( res <span class="ot">&lt;-</span> <span class="fu">mean</span>(res) )</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>tiempo.individual4 <span class="ot">&lt;-</span> <span class="fu">system.time</span>( res <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(res) )</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>tiempo.individual <span class="ot">&lt;-</span> <span class="fu">rbind</span>(tiempo.individual1, tiempo.individual2, </span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>                               tiempo.individual3, tiempo.individual4)</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="co"># forma concatenada</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>tiempo.concatenada <span class="ot">&lt;-</span> <span class="fu">system.time</span>( x <span class="sc">%&gt;%</span> <span class="fu">desviacion</span>() <span class="sc">%&gt;%</span> <span class="fu">cuadrado</span>() <span class="sc">%&gt;%</span> <span class="fu">mean</span>() <span class="sc">%&gt;%</span> <span class="fu">sqrt</span>() )</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a><span class="co"># tiempos </span></span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>df_tiempos <span class="ot">&lt;-</span> <span class="fu">rbind</span>(tiempo.anidada, tiempo.individual, tiempo.concatenada)</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>df_tiempos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   user.self sys.self elapsed user.child sys.child
+tiempo.anidada          0.09     0.01    0.34         NA        NA
+tiempo.individual1      0.12     0.07    0.22         NA        NA
+tiempo.individual2      0.01     0.01    0.09         NA        NA
+tiempo.individual3      0.01     0.00    0.06         NA        NA
+tiempo.individual4      0.00     0.00    0.00         NA        NA
+tiempo.concatenada      0.26     0.05    0.51         NA        NA</code></pre>
+</div>
+</div>
+</section>
+<section id="librería-dplyr" class="level3">
+<h3 class="anchored" data-anchor-id="librería-dplyr">2.1.2 Librería <code>dplyr</code></h3>
+<p>El paquete <strong>dplyr</strong> de R es parte del framework tidyverse de R y tiene las siguientes funciones:</p>
+<ul>
+<li><p><code>filter()</code>,</p></li>
+<li><p><code>select()</code>,</p></li>
+<li><p><code>arrange()</code>,</p></li>
+<li><p><code>mutate()</code>,</p></li>
+<li><p><code>group_by()</code>, y</p></li>
+<li><p><code>summarise()</code></p></li>
+</ul>
+<p>A continuación un ejemplo donde se concantenan estas funciones para analizar los datos del dataset <code>diamonds</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">%&gt;%</span> <span class="fu">filter</span>(carat <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">&amp;</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>           cut <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Fair"</span>,<span class="st">"Premium"</span>, <span class="st">"Ideal"</span>) <span class="sc">&amp;</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>           color <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"D"</span>, <span class="st">"E"</span>, <span class="st">"F"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(color, clarity, cut, carat, price) <span class="sc">%&gt;%</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ppc =</span> price <span class="sc">/</span> carat, </span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">ppc_rnd =</span> <span class="fu">round</span>(ppc, <span class="dv">1</span>))<span class="sc">%&gt;%</span> </span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cut, color) <span class="sc">%&gt;%</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min_p =</span> <span class="fu">min</span>(price), <span class="at">mean_p =</span> <span class="fu">mean</span>(price), </span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">max_p =</span> <span class="fu">max</span>(price), <span class="at">mean_ppc =</span> <span class="fu">mean</span>(ppc_rnd))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 6
+# Groups:   cut [3]
+  cut     color min_p mean_p max_p mean_ppc
+  &lt;ord&gt;   &lt;ord&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt;
+1 Fair    D       536  4219. 16386    4242.
+2 Fair    E       337  3682. 15584    3820.
+3 Fair    F       496  3827. 17995    3788.
+4 Premium D       367  3631. 18575    4112.
+5 Premium E       326  3536. 18477    3988.
+6 Premium F       342  4322. 18791    4358.
+7 Ideal   D       367  2629. 18693    3807.
+8 Ideal   E       326  2598. 18729    3683.
+9 Ideal   F       408  3375. 18780    4098.</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="familia-apply" class="level2">
+<h2 class="anchored" data-anchor-id="familia-apply">2.2 Familia <code>*apply</code></h2>
+<p>Se utilizará las funciones de la familia <code>apply</code> para obtener lo siguiente:</p>
+<ul>
+<li><p>Formas más eficientes que los bucles para aplicar funciones sobre vectores, matrices, data frame.</p></li>
+<li><p>Evaluar la posibilidad de usar métodos más eficientes:</p>
+<ul>
+<li><p>Tipos de datos de entrada: <strong>vector, matriz, data frame…</strong>.</p></li>
+<li><p>Subconjunto (subset) de datos: <strong>filas, columnas, todos los valores…</strong></p></li>
+<li><p>Tipo de respuesta</p></li>
+</ul></li>
+</ul>
+<p>La familia de comandos <code>*apply</code> permite optimizar estos procesos (<strong>apply</strong>, <strong>lapply</strong> , <strong>sapply</strong>, vapply, mapply, rapply, and tapply).</p>
+<p>R es un lenguaje de programación funcional. Por ejemplo, el símbolo <code>&lt;-</code> se define como una <em>función de asignación</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="st">"&lt;-"</span>(b, <span class="dv">20</span>)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="st">"+"</span>(a, b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30</code></pre>
+</div>
+</div>
+<p>Cada operación en R responde a la ejecución de una función. Todas las funciones <code>*apply</code> se caracterizan por tener <strong>funciones como un argumento</strong>, por esto son llamados <strong>funcionales</strong>. Estos funcionales, toman un objeto y una función como entrada (argumentos) y aplican dicha función a cada entrada (fila, columna, elemento) del objeto. La diferencia entre las distintas funciones <code>*apply</code> es básicamente el tipo de objeto que manipulan. El esquema generalizado tomado de <a href="https://adv-r.hadley.nz" class="uri">https://adv-r.hadley.nz</a>.</p>
+<p><br></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./img/map.png" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><br></p>
+<section id="función-apply" class="level3">
+<h3 class="anchored" data-anchor-id="función-apply">2.2.1. Función <code>apply()</code></h3>
+<p>Tiene tres argumentos principales:</p>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 87%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argumento</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>X</code></td>
+<td>Una matriz (o array) o un data.frame que puede reducirse a matriz.</td>
+</tr>
+<tr class="even">
+<td><code>MARGIN</code></td>
+<td>Especifica donde se aplica la función: <strong>filas (1)</strong> o <strong>columnas (2)</strong>.</td>
+</tr>
+<tr class="odd">
+<td><code>FUN</code></td>
+<td>La función a ser aplicada.</td>
+</tr>
+</tbody>
+</table>
+<p>Otros argumentos como <code>na.rm</code> pueden también ser indicados:</p>
+<section id="ejemplo-1-retornar-el-producto-de-cada-fila" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-1-retornar-el-producto-de-cada-fila">Ejemplo 1: Retornar el producto de cada fila</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">seq</span>(<span class="at">from=</span><span class="sc">-</span><span class="dv">10</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="fl">0.1</span>)),<span class="at">nrow=</span><span class="dv">10</span>,<span class="at">ncol=</span><span class="dv">10</span>)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df1,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,] -10.0 -9.0 -8.0 -7.0 -6.0 -5.0 -4.0 -3.0 -2.0  -1.0
+[2,]  -9.9 -8.9 -7.9 -6.9 -5.9 -4.9 -3.9 -2.9 -1.9  -0.9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(df1,<span class="dv">1</span>,prod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 3628800.00 2685395.09 1951127.34 1386569.61  958561.88  639383.86
+ [7]  406016.29  239483.26  124268.88   47801.59</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-2-retornar-la-suma-de-cada-columna" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-2-retornar-la-suma-de-cada-columna">Ejemplo 2: Retornar la suma de cada columna</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(df1,<span class="dv">2</span>,sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] -95.5 -85.5 -75.5 -65.5 -55.5 -45.5 -35.5 -25.5 -15.5  -5.5</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-3-retornar-una-nueva-matriz-cuyos-valores-son-m-elevado-al-cubo." class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-3-retornar-una-nueva-matriz-cuyos-valores-son-m-elevado-al-cubo.">Ejemplo 3: Retornar una nueva matriz cuyos valores son ‘m’ elevado al cubo.</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(df1,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]     [,2]     [,3]     [,4]     [,5]     [,6]    [,7]    [,8]
+ [1,] -1000.000 -729.000 -512.000 -343.000 -216.000 -125.000 -64.000 -27.000
+ [2,]  -970.299 -704.969 -493.039 -328.509 -205.379 -117.649 -59.319 -24.389
+ [3,]  -941.192 -681.472 -474.552 -314.432 -195.112 -110.592 -54.872 -21.952
+ [4,]  -912.673 -658.503 -456.533 -300.763 -185.193 -103.823 -50.653 -19.683
+ [5,]  -884.736 -636.056 -438.976 -287.496 -175.616  -97.336 -46.656 -17.576
+ [6,]  -857.375 -614.125 -421.875 -274.625 -166.375  -91.125 -42.875 -15.625
+ [7,]  -830.584 -592.704 -405.224 -262.144 -157.464  -85.184 -39.304 -13.824
+        [,9]  [,10]
+ [1,] -8.000 -1.000
+ [2,] -6.859 -0.729
+ [3,] -5.832 -0.512
+ [4,] -4.913 -0.343
+ [5,] -4.096 -0.216
+ [6,] -3.375 -0.125
+ [7,] -2.744 -0.064
+ [ reached getOption("max.print") -- omitted 3 rows ]</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-4-retornar-el-promedio-de-cada-variable-en-el-dataset-diamonds." class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-4-retornar-el-promedio-de-cada-variable-en-el-dataset-diamonds.">Ejemplo 4: Retornar el promedio de cada variable en el dataset <code>diamonds</code>.</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2) <span class="co"># diamonds es un dataset parte de esta librería</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(diamonds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(diamonds) <span class="co"># las columnas 2, 3 y 4 son de tipo factor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [53,940 × 10] (S3: tbl_df/tbl/data.frame)
+ $ carat  : num [1:53940] 0.23 0.21 0.23 0.29 0.31 0.24 0.24 0.26 0.22 0.23 ...
+ $ cut    : Ord.factor w/ 5 levels "Fair"&lt;"Good"&lt;..: 5 4 2 4 2 3 3 3 1 3 ...
+ $ color  : Ord.factor w/ 7 levels "D"&lt;"E"&lt;"F"&lt;"G"&lt;..: 2 2 2 6 7 7 6 5 2 5 ...
+ $ clarity: Ord.factor w/ 8 levels "I1"&lt;"SI2"&lt;"SI1"&lt;..: 2 3 5 4 2 6 7 3 4 5 ...
+ $ depth  : num [1:53940] 61.5 59.8 56.9 62.4 63.3 62.8 62.3 61.9 65.1 59.4 ...
+ $ table  : num [1:53940] 55 61 65 58 58 57 57 55 61 61 ...
+ $ price  : int [1:53940] 326 326 327 334 335 336 336 337 337 338 ...
+ $ x      : num [1:53940] 3.95 3.89 4.05 4.2 4.34 3.94 3.95 4.07 3.87 4 ...
+ $ y      : num [1:53940] 3.98 3.84 4.07 4.23 4.35 3.96 3.98 4.11 3.78 4.05 ...
+ $ z      : num [1:53940] 2.43 2.31 2.31 2.63 2.75 2.48 2.47 2.53 2.49 2.39 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="do">## subset diamonds de las columnas numéricas</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>diamonds_num <span class="ot">&lt;-</span> diamonds[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)] <span class="co"># todas las columnas, excepto del 2 al 4</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="do">## aplicar la función para obtener el promedio de todas las columnas</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="co"># normal</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>diamonds_mean1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">colnames</span>(diamonds_num))</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(diamonds_num)){</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>  prom_temp <span class="ot">=</span> <span class="fu">mean</span>(<span class="fu">unlist</span>(diamonds_num[,i]), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>  diamonds_mean1<span class="sc">$</span>promedios[i] <span class="ot">=</span> prom_temp</span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>diamonds_mean1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  colnames.diamonds_num.    promedios
+1                  carat    0.7979397
+2                  depth   61.7494049
+3                  table   57.4571839
+4                  price 3932.7997219
+5                      x    5.7311572
+6                      y    5.7345260
+7                      z    3.5387338</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Utilizando apply()</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>diamonds_mean2 <span class="ot">&lt;-</span> <span class="fu">apply</span>(diamonds_num, <span class="dv">2</span>, mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>diamonds_mean2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       carat        depth        table        price            x            y 
+   0.7979397   61.7494049   57.4571839 3932.7997219    5.7311572    5.7345260 
+           z 
+   3.5387338 </code></pre>
+</div>
+</div>
+<p>Para una estructura tipo matriz, <code>apply()</code> es la opción más adecuada. Esta es más rápida que estructuras <code>for()</code> las cuales son estándar en otros lenguajes como Python o C++.</p>
+</section>
+</section>
+<section id="funciones-lapply-y-sapply" class="level3">
+<h3 class="anchored" data-anchor-id="funciones-lapply-y-sapply">2.2.2. Funciones <code>lapply()</code> y <code>sapply()</code></h3>
+<table class="table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 27%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Argumento</th>
+<th>X</th>
+<th>Funcion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lapply()</code></td>
+<td>lista (inicial **l** de lista)</td>
+<td>Se aplica a cada elemento de la lista</td>
+</tr>
+<tr class="even">
+<td><code>sapply()</code></td>
+<td>lista (inicial **s** de simple)</td>
+<td>Se aplica a cada elemento de la lista y la respuesta es un vector o dataframe</td>
+</tr>
+</tbody>
+</table>
+<p>Ejemplo de lista:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>lst <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ambato"</span>, </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>            mean,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mean</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>),</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">function</span>(x) x <span class="sc">+</span> <span class="dv">1</span>, </span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data.frame</span>(<span class="at">col1 =</span> <span class="fu">rnorm</span>(<span class="dv">10</span>), <span class="at">col2 =</span> <span class="fu">runif</span>(<span class="dv">10</span>)),</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>            <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>lst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+[[2]]
+[1] "Ambato"
+
+[[3]]
+function (x, ...) 
+UseMethod("mean")
+&lt;bytecode: 0x000002208af6ea40&gt;
+&lt;environment: namespace:base&gt;
+
+[[4]]
+[1] 50.5
+
+[[5]]
+function(x) x + 1
+
+[[6]]
+         col1      col2
+1  -0.9307991 0.9756268
+2   2.0615365 0.1848264
+3   0.1786201 0.8505748
+4  -0.7127667 0.9580194
+5  -1.0445003 0.2178335
+6  -0.5062905 0.8149322
+7   0.5028045 0.0686360
+8  -0.4286416 0.8089420
+9   0.3020319 0.1045844
+10  0.5387718 0.5281010
+
+[[7]]
+     [,1] [,2] [,3]
+[1,]    1    4    7
+[2,]    2    5    8
+[3,]    3    6    9</code></pre>
+</div>
+</div>
+<p>Para acceder a los elementos de una lista se requiere el uso de corchetes <code>[[i]]</code> donde <code>i</code> es la posición en la lista y se utiliza para iterar en los elementos de las listas.</p>
+<section id="ejemplo-1-ilustrar-el-uso-de-lapply-y-sapply" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-1-ilustrar-el-uso-de-lapply-y-sapply">Ejemplo 1: ilustrar el uso de <code>lapply()</code> y <code>sapply()</code></h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>A<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>,<span class="dv">3</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>B<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">15</span>, <span class="dv">4</span>,<span class="dv">3</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>C<span class="ot">&lt;-</span><span class="fu">matrix</span>(<span class="dv">8</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>lista.matrices<span class="ot">&lt;-</span><span class="fu">list</span>(A,B,C) </span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a><span class="co"># En cada elemento de la lista, mostrar el elemento en la posición [3,2] </span></span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a><span class="co"># normalmente</span></span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(lista.matrices)){</span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(lista.matrices[[i]][<span class="dv">3</span>,<span class="dv">2</span>])</span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6
+[1] 10
+[1] 10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Utilizando lapply() o sapply()</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(lista.matrices,<span class="st">"["</span>, <span class="dv">3</span>,<span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 6
+
+[[2]]
+[1] 10
+
+[[3]]
+[1] 10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(lista.matrices,<span class="st">"["</span>, <span class="dv">3</span>,<span class="dv">2</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  6 10 10</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-2-lapply-y-sapply-con-funciones-propias" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-2-lapply-y-sapply-con-funciones-propias">Ejemplo 2: <code>lapply()</code> y <code>sapply()</code> con funciones propias</h4>
+<p>En este ejemplo sencillo se utilizará la fórmula: <span class="math display">\[x^2-2x+1\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="cf">function</span>(i) i<span class="sc">^</span><span class="dv">2-2</span><span class="sc">*</span>i<span class="sc">+</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 9
+
+[[2]]
+[1] 4
+
+[[3]]
+[1] 1
+
+[[4]]
+[1] 0
+
+[[5]]
+[1] 1
+
+[[6]]
+[1] 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, <span class="cf">function</span>(i) i<span class="sc">^</span><span class="dv">2-2</span><span class="sc">*</span>i<span class="sc">+</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9 4 1 0 1 4</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-3-lapply-y-sapply-con-el-dataset-diamonds" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-3-lapply-y-sapply-con-el-dataset-diamonds">Ejemplo 3: <code>lapply()</code> y <code>sapply()</code> con el dataset <code>diamonds</code></h4>
+<p>En un ejemplo práctico que considera análisis estadístico y visualización de resultados, generamos modelos lineales entre dos variables ‘carat’ y ‘price’ y sus correspondients gráficos de dispersión para todos los niveles de ‘cut’, pero únicamente para aquellos diamantes de ‘color = D’.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Separar (split) el dataset diamonds por el tipo de corte (cut)</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>cut_lst <span class="ot">&lt;-</span> <span class="fu">split</span>(diamonds, <span class="at">f =</span> diamonds<span class="sc">$</span>cut) <span class="co"># divide en dataframe por categorías de "cut"</span></span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cut_lst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Fair"      "Good"      "Very Good" "Premium"   "Ideal"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lapply() sobre la lista de dataframes cut_lst</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>diamonds_lapply <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">seq</span>(cut_lst), <span class="cf">function</span>(i) {</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="do">## seleccionar solo los diamantes de color = D</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  dat <span class="ot">&lt;-</span> cut_lst[[i]]</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  dat_d <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(color <span class="sc">==</span> <span class="st">"E"</span>)</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## calcular el modelo linear</span></span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>  lm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> carat, <span class="at">data =</span> dat_d)</span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## crear gráfico de dispersión</span></span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>  cut_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> price), <span class="at">data =</span> dat_d) <span class="sc">+</span></span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">"grey20"</span>, <span class="at">size =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">fill =</span> <span class="st">"violet"</span>, <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">size =</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb88-15"><a href="#cb88-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="at">data =</span> <span class="cn">NULL</span>,</span>
+<span id="cb88-16"><a href="#cb88-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">x =</span> <span class="fu">min</span>(dat_d<span class="sc">$</span>carat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> <span class="fl">0.2</span>,</span>
+<span id="cb88-17"><a href="#cb88-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> <span class="fu">max</span>(dat_d<span class="sc">$</span>price, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb88-18"><a href="#cb88-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">label =</span> <span class="fu">unique</span>(dat_d<span class="sc">$</span>cut)) <span class="sc">+</span> </span>
+<span id="cb88-19"><a href="#cb88-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb88-20"><a href="#cb88-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-21"><a href="#cb88-21" aria-hidden="true" tabindex="-1"></a>  <span class="do">## retornar la data, el modelo lineal y la gráfica</span></span>
+<span id="cb88-22"><a href="#cb88-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">data =</span> dat_d,</span>
+<span id="cb88-23"><a href="#cb88-23" aria-hidden="true" tabindex="-1"></a>              <span class="at">modelo_lineal =</span> lm1,</span>
+<span id="cb88-24"><a href="#cb88-24" aria-hidden="true" tabindex="-1"></a>              <span class="at">grafica =</span> cut_plot))</span>
+<span id="cb88-25"><a href="#cb88-25" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-27"><a href="#cb88-27" aria-hidden="true" tabindex="-1"></a><span class="do">## setear nombres de la lista para claridad </span></span>
+<span id="cb88-28"><a href="#cb88-28" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(diamonds_lapply) <span class="ot">&lt;-</span> <span class="fu">names</span>(cut_lst)</span>
+<span id="cb88-29"><a href="#cb88-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar resultados hasta segundo nivel de anidamiento</span></span>
+<span id="cb88-31"><a href="#cb88-31" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(diamonds_lapply,<span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 5
+ $ Fair     :List of 3
+ $ Good     :List of 3
+ $ Very Good:List of 3
+ $ Premium  :List of 3
+ $ Ideal    :List of 3</code></pre>
+</div>
+</div>
+<p>Los resultados en forma de lista facilitan el acceso rápido a cada item de la lista.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>diamonds_lapply<span class="sc">$</span>Premium</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+# A tibble: 2,337 × 10
+   carat cut     color clarity depth table price     x     y     z
+   &lt;dbl&gt; &lt;ord&gt;   &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1  0.21 Premium E     SI1      59.8    61   326  3.89  3.84  2.31
+ 2  0.2  Premium E     SI2      60.2    62   345  3.79  3.75  2.27
+ 3  0.32 Premium E     I1       60.9    58   345  4.38  4.42  2.68
+ 4  0.22 Premium E     VS2      61.6    58   404  3.93  3.89  2.41
+ 5  0.24 Premium E     VVS1     60.7    58   553  4.01  4.03  2.44
+ 6  0.75 Premium E     SI1      59.9    54  2760  6     5.96  3.58
+ 7  0.63 Premium E     VVS1     60.9    60  2765  5.52  5.55  3.37
+ 8  0.71 Premium E     VS2      62.7    58  2776  5.74  5.68  3.58
+ 9  0.7  Premium E     VS2      61.1    60  2777  5.71  5.64  3.47
+10  0.7  Premium E     SI1      60      59  2777  5.79  5.75  3.46
+# … with 2,327 more rows
+
+$modelo_lineal
+
+Call:
+lm(formula = price ~ carat, data = dat_d)
+
+Coefficients:
+(Intercept)        carat  
+      -2564         8504  
+
+
+$grafica</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="funciones_files/figure-html/list-scatter-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Para acceder a los elementos de las listas se pueden utilizar <code>$</code> utilizando los nombres de los elementos o <code>[[]]</code> con los índices de los elementos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diamonds_lapply<span class="sc">$</span>Premium<span class="sc">$</span>modelo_lineal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ carat, data = dat_d)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12918.4   -796.0    -46.0    608.4   8832.7 
+
+Coefficients:
+            Estimate Std. Error t value            Pr(&gt;|t|)    
+(Intercept) -2564.48      62.73  -40.88 &lt;0.0000000000000002 ***
+carat        8503.56      75.91  112.03 &lt;0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1503 on 2335 degrees of freedom
+Multiple R-squared:  0.8431,    Adjusted R-squared:  0.8431 
+F-statistic: 1.255e+04 on 1 and 2335 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diamonds_lapply[[<span class="dv">4</span>]][[<span class="dv">2</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ carat, data = dat_d)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12918.4   -796.0    -46.0    608.4   8832.7 
+
+Coefficients:
+            Estimate Std. Error t value            Pr(&gt;|t|)    
+(Intercept) -2564.48      62.73  -40.88 &lt;0.0000000000000002 ***
+carat        8503.56      75.91  112.03 &lt;0.0000000000000002 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1503 on 2335 degrees of freedom
+Multiple R-squared:  0.8431,    Adjusted R-squared:  0.8431 
+F-statistic: 1.255e+04 on 1 and 2335 DF,  p-value: &lt; 0.00000000000000022</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="programación-funcional" class="level1">
+<h1>3. Programación Funcional</h1>
+<p>Estructura de una función, ejemplo del Teorema de Pitágoras: <span class="math display">\[c^2 = a^2 + b^2\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>teoremaPitagoras <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(a<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> b<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(c)</span>
+<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a><span class="fu">teoremaPitagoras</span>(<span class="dv">11</span>,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12.08305</code></pre>
+</div>
+</div>
+<section id="funcionales" class="level2">
+<h2 class="anchored" data-anchor-id="funcionales">3.1. Funcionales</h2>
+<p>Los <em>funcionales</em> son funciones que toman otras funciones como argumentos. Usualmente se utilizan funciones precargadas de R (sum, mean, sd, var, etc), aunque se puede utilizar funciones personalizadas:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>df4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">a =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">80</span>, <span class="dv">5000</span>, <span class="at">replace=</span>T),</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">b =</span> <span class="fu">sample</span>(<span class="dv">12</span><span class="sc">:</span><span class="dv">203</span>, <span class="dv">5000</span>, <span class="at">replace=</span>T))</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>result_pitagoras <span class="ot">&lt;-</span> <span class="fu">sapply</span>( <span class="fu">seq</span>(<span class="fu">nrow</span>(df4)), <span class="cf">function</span>(i) <span class="fu">teoremaPitagoras</span>(df4[i, <span class="dv">1</span>], df4[i, <span class="dv">2</span>]))</span>
+<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a>result_pitagoras[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 207.79317  22.67157 112.80514  80.23092 170.49633 109.00000  31.78050
+ [8]  89.37561 125.15990 175.55911</code></pre>
+</div>
+</div>
+</section>
+<section id="closures" class="level2">
+<h2 class="anchored" data-anchor-id="closures">3.2. Closures</h2>
+<p>La contraparte de los funcionales son los llamados <em>closures</em>. Estas son funciones que retornan (o construyen) una función en base a algún argumento proporcionado. Consideremos la siguiente situación:</p>
+<p>Se tiene un conjunto de posibles variables predictoras (<code>pred</code>), un conjunto de variables de respuesta (<code>resp</code>) y el objetivo es identificar la mejor combinación que explica las varianzas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Data al azar</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">pred1 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pred2 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pred3 =</span> <span class="fu">rpois</span>(<span class="dv">100</span>, <span class="dv">2</span>),</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pred4 =</span> <span class="dv">200</span><span class="sc">:</span><span class="dv">101</span>, </span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">pred5 =</span> <span class="fu">runif</span>(<span class="dv">100</span>, <span class="dv">1</span>, <span class="dv">32</span>))</span>
+<span id="cb100-8"><a href="#cb100-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-9"><a href="#cb100-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">234</span>)</span>
+<span id="cb100-10"><a href="#cb100-10" aria-hidden="true" tabindex="-1"></a>resp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">resp1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb100-11"><a href="#cb100-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">resp2 =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb100-12"><a href="#cb100-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">resp3 =</span> <span class="dv">200</span><span class="sc">:</span><span class="dv">101</span>,</span>
+<span id="cb100-13"><a href="#cb100-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">resp4 =</span> <span class="fu">runif</span>(<span class="dv">100</span>, <span class="dv">2</span>, <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podríamos simplemente copiar y pegar sentencias para calcular cada combinación.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinaciones posibles </span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp1 <span class="sc">~</span> pred<span class="sc">$</span>pred1))<span class="sc">$</span>r.squared</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp1 <span class="sc">~</span> pred<span class="sc">$</span>pred1))<span class="sc">$</span>r.squared</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp3 <span class="sc">~</span> pred<span class="sc">$</span>pred1))<span class="sc">$</span>r.squared</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp4 <span class="sc">~</span> pred<span class="sc">$</span>pred1))<span class="sc">$</span>r.squared</span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="co">#....</span></span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp1 <span class="sc">~</span> pred<span class="sc">$</span>pred5))<span class="sc">$</span>r.squared</span>
+<span id="cb101-8"><a href="#cb101-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp2 <span class="sc">~</span> pred<span class="sc">$</span>pred5))<span class="sc">$</span>r.squared</span>
+<span id="cb101-9"><a href="#cb101-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp3 <span class="sc">~</span> pred<span class="sc">$</span>pred5))<span class="sc">$</span>r.squared</span>
+<span id="cb101-10"><a href="#cb101-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(resp<span class="sc">$</span>resp4 <span class="sc">~</span> pred<span class="sc">$</span>pred5))<span class="sc">$</span>r.squared</span>
+<span id="cb101-11"><a href="#cb101-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ... etc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta forma de evaluar no es óptimo y es proclive a errores difíciles de rastrear en códigos más extensos. En este caso usar closures puede ser de gran ayuda.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="do">### definir un closure</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>calcRsq <span class="ot">&lt;-</span> <span class="cf">function</span>(pred) {</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(y) {</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> pred))<span class="sc">$</span>r.squared</span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora, tenemos una forma general de definir funciones para calcular valores de R-cuadrado:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create la función usando pred$v1 como predictor</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>calcRsq_pred1 <span class="ot">&lt;-</span> <span class="fu">calcRsq</span>(pred<span class="sc">$</span>pred1)</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="fu">calcRsq_pred1</span>(resp<span class="sc">$</span>resp1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.006369369</code></pre>
+</div>
+</div>
+<p>Usar una llamada explícita como la que acabamos de definir realmente no es de mucha ayuda, aunque hemos reducido la posibilidad de errores de escritura pues el predictor se encuentra fijo en la función <code>calcRsq_pred1()</code>. Ahora, dado que tenemos una función que calcula el valor R-cuadrado entre un predictor fijo y cualquier variable respuesta que se proporcione, podemos usar un funcional como <code>apply()</code> para calcular la relación entre el predictor y el conjunto de variables respuesta.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apply</span>(resp, <span class="dv">2</span>, calcRsq_pred1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      resp1       resp2       resp3       resp4 
+0.006369369 0.012977823 0.006369369 0.050729762 </code></pre>
+</div>
+</div>
+<p>Podríamos complementar aún más nuestro beneficio utilizando <code>sapply()</code>, ahora calculemos cada posible combinación (preditor-respuesta) en un solo paso:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(<span class="fu">seq</span>(<span class="fu">ncol</span>(pred)), <span class="cf">function</span>(i) {</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> <span class="fu">calcRsq</span>(pred[, i])</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(resp, <span class="dv">2</span>, f)</span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             [,1]        [,2]        [,3]        [,4]          [,5]
+resp1 0.006369369 1.000000000 0.006326898 1.000000000 0.00001742369
+resp2 0.012977823 0.012414970 0.006192994 0.012414970 0.01149821186
+resp3 0.006369369 1.000000000 0.006326898 1.000000000 0.00001742369
+resp4 0.050729762 0.003576356 0.006620626 0.003576356 0.00003189444</code></pre>
+</div>
+</div>
+<p>Sintetizando:</p>
+<ol type="1">
+<li>iterar sobre las columnas de pred - <code>seq(ncol(pred))</code>,</li>
+<li>definir una función <code>f</code> que setea el closure para usar la columna de la iteración actual; <code>f &lt;- calcRsq(pred[, i])</code>, y</li>
+<li>aplicar esta función <code>f</code> a todas las columnas de variables respuesta - <code>apply(resp, 2, f)</code>.</li>
+</ol>
+<p>Se ha evidenciado que la combinación de funcionales y closures es una forma poderosa, flexible y elegante de generalizar cálculos computacionales.</p>
+</section>
+</section>
+<section id="profiling-y-benchmarking" class="level1">
+<h1>4. Profiling y Benchmarking</h1>
+<p>La optimización de los códigos por el método de prueba y error no es el adecuado. Para esto, R tiene herramientas que permite conocer cómo el código está usando el tiempo y la memoria de la máquina. Conociendo las partes del código con alto consumo de memoria o tiempo se puede plantear con rapidez estrategias de mejora de los códigos. Los paquetes <code>microbenchmark</code> y <code>profvis</code> se utilizan en esta revisión.</p>
+<section id="temporizador-microbenchmark" class="level2">
+<h2 class="anchored" data-anchor-id="temporizador-microbenchmark">4.1 Temporizador <code>microbenchmark</code></h2>
+<p>Es un paquete de R que es una alternativa con mayor precisión para <code>system.time()</code>. La precisión se debe a que este paquete devuelve los valores de tiempos en nanosegundos. Algunas de las características de <code>microbenchmark</code> son:</p>
+<ul>
+<li><p>Es útil para ejecutar secciones pequeñas de código y evaluar su rendimiento, así como comparar la velocidad de varias funciones que tienen el mismo objetivo.</p></li>
+<li><p>La función del mismo nombre de este paquete ejecuta el código múltiples veces (100 por defecto) y provee un resumen de estadísticas del tiempo utilizado para ejecutar el código.</p></li>
+<li><p>La ventaja de este paquete es que toma en cuenta el tiempo invertido en el procesamiento de la función de microbenchmark por sí misma y de esta manera utiliza iteraciones de “warm-up” antes de ejecutar las iteraciones para el procesamiento estadístico.</p></li>
+<li><p>Se puede incluir múltiples líneas de código dentro de una única llamada de microbenchmark. Sin embargo, para obtener benchmarks independientes de cada línea de código se debe separarlas con una coma:</p></li>
+</ul>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(a <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>), </span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a>               b <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">rnorm</span>(<span class="dv">1000</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="ejemplo-1-identificar-valores-superiores-al-umbral" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-1-identificar-valores-superiores-al-umbral">Ejemplo 1: Identificar valores superiores al umbral</h4>
+<p>En este ejemplo se tiene dos funciones que buscan identificar los días cuando la temperatura:</p>
+<ul>
+<li><p>la temperatura iguala o excede un umbral de temperatura (e.g., 25ºC) y</p></li>
+<li><p>la temperatura iguala o excede la temperatura más alta registrada antes de ese día.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="co"># data</span></span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>df_ejemplo <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">date =</span> <span class="fu">c</span>(<span class="st">"2015-07-01"</span>, <span class="st">"2015-07-02"</span>,</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"2015-07-03"</span>, <span class="st">"2015-07-04"</span>,</span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"2015-07-05"</span>, <span class="st">"2015-07-06"</span>,</span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a>                                    <span class="st">"2015-07-07"</span>, <span class="st">"2015-07-08"</span>),</span>
+<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">temp =</span> <span class="fu">c</span>(<span class="fl">26.5</span>, <span class="fl">27.2</span>, <span class="fl">28.0</span>, <span class="fl">26.9</span>, </span>
+<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>                                    <span class="fl">27.5</span>, <span class="fl">25.9</span>, <span class="fl">28.0</span>, <span class="fl">28.2</span>)) </span>
+<span id="cb110-10"><a href="#cb110-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Función con for </span></span>
+<span id="cb110-11"><a href="#cb110-11" aria-hidden="true" tabindex="-1"></a>record1 <span class="ot">&lt;-</span> <span class="cf">function</span>(df, umbral){</span>
+<span id="cb110-12"><a href="#cb110-12" aria-hidden="true" tabindex="-1"></a>  highest_temp <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb110-13"><a href="#cb110-13" aria-hidden="true" tabindex="-1"></a>  record_temp <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb110-14"><a href="#cb110-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(df)){</span>
+<span id="cb110-15"><a href="#cb110-15" aria-hidden="true" tabindex="-1"></a>    highest_temp <span class="ot">&lt;-</span> <span class="fu">max</span>(highest_temp, df<span class="sc">$</span>temp[i])</span>
+<span id="cb110-16"><a href="#cb110-16" aria-hidden="true" tabindex="-1"></a>    record_temp[i] <span class="ot">&lt;-</span> df<span class="sc">$</span>temp[i] <span class="sc">&gt;=</span> umbral <span class="sc">&amp;</span> </span>
+<span id="cb110-17"><a href="#cb110-17" aria-hidden="true" tabindex="-1"></a>      df<span class="sc">$</span>temp[i] <span class="sc">&gt;=</span> highest_temp</span>
+<span id="cb110-18"><a href="#cb110-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb110-19"><a href="#cb110-19" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">cbind</span>(df, record_temp)</span>
+<span id="cb110-20"><a href="#cb110-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb110-21"><a href="#cb110-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb110-22"><a href="#cb110-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-23"><a href="#cb110-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Función con `%&gt;%` de tidyverse</span></span>
+<span id="cb110-24"><a href="#cb110-24" aria-hidden="true" tabindex="-1"></a>record2 <span class="ot">&lt;-</span> <span class="cf">function</span>(df, umbral){</span>
+<span id="cb110-25"><a href="#cb110-25" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb110-26"><a href="#cb110-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">over_threshold =</span> temp <span class="sc">&gt;=</span> umbral,</span>
+<span id="cb110-27"><a href="#cb110-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">cummax_temp =</span> temp <span class="sc">==</span> <span class="fu">cummax</span>(temp),</span>
+<span id="cb110-28"><a href="#cb110-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">record_temp =</span> over_threshold <span class="sc">&amp;</span> cummax_temp) <span class="sc">%&gt;%</span></span>
+<span id="cb110-29"><a href="#cb110-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>over_threshold, <span class="sc">-</span> cummax_temp)</span>
+<span id="cb110-30"><a href="#cb110-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">as.data.frame</span>(df))</span>
+<span id="cb110-31"><a href="#cb110-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb110-32"><a href="#cb110-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-33"><a href="#cb110-33" aria-hidden="true" tabindex="-1"></a>(test_1 <span class="ot">&lt;-</span> <span class="fu">record1</span>(df_ejemplo, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        date temp record_temp
+1 2015-07-01 26.5        TRUE
+2 2015-07-02 27.2        TRUE
+3 2015-07-03 28.0        TRUE
+4 2015-07-04 26.9       FALSE
+5 2015-07-05 27.5       FALSE
+6 2015-07-06 25.9       FALSE
+7 2015-07-07 28.0        TRUE
+8 2015-07-08 28.2        TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>(test_2 <span class="ot">&lt;-</span> <span class="fu">record2</span>(df_ejemplo, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        date temp record_temp
+1 2015-07-01 26.5        TRUE
+2 2015-07-02 27.2        TRUE
+3 2015-07-03 28.0        TRUE
+4 2015-07-04 26.9       FALSE
+5 2015-07-05 27.5       FALSE
+6 2015-07-06 25.9       FALSE
+7 2015-07-07 28.0        TRUE
+8 2015-07-08 28.2        TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(test_1, test_2) <span class="co"># revisa si todo el contenido es similar</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>El rendimiento de las dos funciones se puede comparar usando microbenchmark:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(microbenchmark)</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>recordTemp_rend1 <span class="ot">&lt;-</span> <span class="fu">microbenchmark</span>(<span class="fu">record1</span>(df_ejemplo, <span class="dv">25</span>), </span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="fu">record2</span>(df_ejemplo, <span class="dv">25</span>))</span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>recordTemp_rend1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unit: microseconds
+                    expr     min       lq     mean   median      uq      max
+ record1(df_ejemplo, 25)   348.1   372.75   626.61   441.75   695.7   2419.5
+ record2(df_ejemplo, 25) 16530.5 18604.95 29421.45 22090.70 34047.5 167690.1
+ neval cld
+   100  a 
+   100   b</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-2-identificar-valores-superiores-al-umbral-dataset-chicagonmmaps" class="level4">
+<h4 class="anchored" data-anchor-id="ejemplo-2-identificar-valores-superiores-al-umbral-dataset-chicagonmmaps">Ejemplo 2: Identificar valores superiores al umbral dataset <code>chicagoNMMAPS</code></h4>
+<p>El dataset <code>chicagoNMMAPS</code> es parte de la librería <code>dlnm</code>. El dataset tiene 14 variables e incluye la temperatura de 15 años en Chicago.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dlnm)</span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"chicagoNMMAPS"</span>)</span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(chicagoNMMAPS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   5114 obs. of  14 variables:
+ $ date : Date, format: "1987-01-01" "1987-01-02" ...
+ $ time : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ year : num  1987 1987 1987 1987 1987 ...
+ $ month: num  1 1 1 1 1 1 1 1 1 1 ...
+ $ doy  : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ dow  : Factor w/ 7 levels "Sunday","Monday",..: 5 6 7 1 2 3 4 5 6 7 ...
+ $ death: int  130 150 101 135 126 130 129 109 125 153 ...
+ $ cvd  : int  65 73 43 72 64 63 72 51 62 90 ...
+ $ resp : int  13 14 11 7 12 12 12 13 7 11 ...
+ $ temp : num  -0.278 0.556 0.556 -1.667 0 ...
+ $ dptp : num  31.5 29.9 27.4 28.6 28.9 ...
+ $ rhum : num  95.5 88.2 89.5 84.5 74.5 ...
+ $ pm10 : num  27 NA 32.8 40 NA ...
+ $ o3   : num  4.38 4.93 3.75 4.29 4.75 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparación del rendimiento (performance) de los dos tipos de funciones</span></span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>recordTemp_rend2 <span class="ot">&lt;-</span> <span class="fu">microbenchmark</span>(<span class="fu">record1</span>(chicagoNMMAPS, <span class="dv">25</span>), </span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>                                     <span class="fu">record2</span>(chicagoNMMAPS, <span class="dv">25</span>))</span>
+<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>recordTemp_rend2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unit: milliseconds
+                       expr     min       lq     mean  median       uq      max
+ record1(chicagoNMMAPS, 25) 16.5160 17.90755 22.85465 20.1205 23.44060 132.1933
+ record2(chicagoNMMAPS, 25) 14.8298 17.26305 23.46964 19.1844 24.01455 164.1418
+ neval cld
+   100   a
+   100   a</code></pre>
+</div>
+</div>
+<p>A continuación se visualiza los resultados del rendimiento de las funciones:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For small example data</span></span>
+<span id="cb122-3"><a href="#cb122-3" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(recordTemp_rend1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="funciones_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For larger data set</span></span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(recordTemp_rend2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="funciones_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="visualizador-de-tiempos-profvis" class="level2">
+<h2 class="anchored" data-anchor-id="visualizador-de-tiempos-profvis">4.2. Visualizador de tiempos: <code>profvis</code></h2>
+<p>La librearía <code>profvis()</code> es una hgerramienta que permite visualizar cómo R está utilizando el tiempo al ejecutar un código.</p>
+<p>Una vez que se ha identificado el código cuya ejecución es más lenta, el siguiente paso es comprender que partes del código están causando los cuellos de botella.</p>
+<p>La función profvis del paquete del mismo nombre es la herramienta adecuada para esto la cual usa la función RProf base de R y visualiza un entorno interactivo de navegación.</p>
+<p>El profiling se efectúa escribiendo los resultados de la pila de llamadas (sentencias) cada 10 milisegundos.</p>
+<p>Para usar esta herramienta, únicamente incluya el código en llaves en el caso de tener varias sentencias. Probemos a identificar cual fue el problema con la función <code>record1</code>, para ejecutar el profiling:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(profvis)</span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dlnm)</span>
+<span id="cb124-3"><a href="#cb124-3" aria-hidden="true" tabindex="-1"></a>datafr <span class="ot">&lt;-</span> chicagoNMMAPS</span>
+<span id="cb124-4"><a href="#cb124-4" aria-hidden="true" tabindex="-1"></a>datafr <span class="ot">&lt;-</span> <span class="fu">rbind</span>(datafr,datafr)</span>
+<span id="cb124-5"><a href="#cb124-5" aria-hidden="true" tabindex="-1"></a>umbral <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb124-6"><a href="#cb124-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="fu">profvis</span>({</span>
+<span id="cb124-8"><a href="#cb124-8" aria-hidden="true" tabindex="-1"></a>  highest_temp <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb124-9"><a href="#cb124-9" aria-hidden="true" tabindex="-1"></a>  record_temp <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb124-10"><a href="#cb124-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(datafr)){</span>
+<span id="cb124-11"><a href="#cb124-11" aria-hidden="true" tabindex="-1"></a>    highest_temp <span class="ot">&lt;-</span> <span class="fu">max</span>(highest_temp, datafr<span class="sc">$</span>temp[i])</span>
+<span id="cb124-12"><a href="#cb124-12" aria-hidden="true" tabindex="-1"></a>    record_temp[i] <span class="ot">&lt;-</span> datafr<span class="sc">$</span>temp[i] <span class="sc">&gt;=</span> umbral <span class="sc">&amp;</span> </span>
+<span id="cb124-13"><a href="#cb124-13" aria-hidden="true" tabindex="-1"></a>      datafr<span class="sc">$</span>temp[i] <span class="sc">&gt;=</span> highest_temp</span>
+<span id="cb124-14"><a href="#cb124-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb124-15"><a href="#cb124-15" aria-hidden="true" tabindex="-1"></a>  datafr <span class="ot">&lt;-</span> <span class="fu">cbind</span>(datafr, record_temp)</span>
+<span id="cb124-16"><a href="#cb124-16" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="profvis html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2efff447f64f5bf67289" style="width:100%;height:600px;"></div>
+<script type="application/json" data-for="htmlwidget-2efff447f64f5bf67289">{"x":{"message":{"prof":{"time":[1,1,1,2,2,2,3,3,3,3,4,4],"depth":[3,2,1,3,2,1,4,3,2,1,2,1],"label":["Rprof","profvis",".main","record_temp[i] <- datafr$temp[i] >= umbral & ","$",".main","record_temp[i] <- datafr$temp[i] >= umbral & ","force","profvis",".main","max",".main"],"filenum":[null,null,null,1,1,null,1,null,null,null,1,null],"linenum":[null,null,null,12,12,null,12,null,null,null,11,null],"memalloc":[193.221885681152,193.221885681152,193.221885681152,193.42951965332,193.42951965332,193.42951965332,193.768547058105,193.768547058105,193.768547058105,193.768547058105,194.422920227051,194.422920227051],"meminc":[0,0,0,0.207633972167969,0,0,0.339027404785156,0,0,0,0.654373168945312,0],"filename":[null,null,null,"<expr>","<expr>",null,"<expr>",null,null,null,"<expr>",null]},"interval":10,"files":[{"filename":"<expr>","content":"library(profvis)\nlibrary(dlnm)\ndatafr <- chicagoNMMAPS\ndatafr <- rbind(datafr,datafr)\numbral <- 25\n\nprofvis({\n  highest_temp <- c()\n  record_temp <- c()\n  for(i in 1:nrow(datafr)){\n    highest_temp <- max(highest_temp, datafr$temp[i])\n    record_temp[i] <- datafr$temp[i] >= umbral & \n      datafr$temp[i] >= highest_temp\n  }\n  datafr <- cbind(datafr, record_temp)\n})","normpath":"<expr>"}],"prof_output":"C:\\Users\\MoisesG\\AppData\\Local\\Temp\\Rtmpod2JMl\\file3e08725853d3.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>La salida de profvis proporciona dos opciones de visualización, “Flame Graph” o “Data”.</p>
+<p><br></p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/profvis_flame.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Ejemplo de la salida de profiling de la función find_records_1 en modo de visualización “Flame Graph”</figcaption><p></p>
+</figure>
+</div>
+</center>
+<p><br></p>
+<p><br></p>
+<center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/profvis_data.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Ejemplo de la salida de profiling de la función find_records_1 en modo de visualización “Data”</figcaption><p></p>
+</figure>
+</div>
+</center>
+<p><br></p>
+<p>Otro ejemplo con mayor tiempo de ejecución usando datos sintéticos. Ajuste de una curva y = ax+b</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a><span class="fu">profvis</span>({           </span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a>  reps <span class="ot">&lt;-</span> <span class="dv">10000</span>         </span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="dv">100</span>          </span>
+<span id="cb125-4"><a href="#cb125-4" aria-hidden="true" tabindex="-1"></a>  beta0 <span class="ot">&lt;-</span> <span class="dv">2</span>            </span>
+<span id="cb125-5"><a href="#cb125-5" aria-hidden="true" tabindex="-1"></a>  beta1 <span class="ot">&lt;-</span> .<span class="dv">7</span>           </span>
+<span id="cb125-6"><a href="#cb125-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb125-7"><a href="#cb125-7" aria-hidden="true" tabindex="-1"></a>  save <span class="ot">&lt;-</span> <span class="fu">vector</span>()          </span>
+<span id="cb125-8"><a href="#cb125-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb125-9"><a href="#cb125-9" aria-hidden="true" tabindex="-1"></a>  save <span class="ot">&lt;-</span> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>reps) {           </span>
+<span id="cb125-10"><a href="#cb125-10" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)           </span>
+<span id="cb125-11"><a href="#cb125-11" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> beta0 <span class="sc">+</span> beta1<span class="sc">*</span>x <span class="sc">+</span> <span class="fu">rnorm</span>(n)         </span>
+<span id="cb125-12"><a href="#cb125-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb125-13"><a href="#cb125-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Redondear a 2 decimales           </span></span>
+<span id="cb125-14"><a href="#cb125-14" aria-hidden="true" tabindex="-1"></a>    badinterviewer <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>n, .<span class="dv">25</span><span class="sc">*</span>n, <span class="at">replace =</span> <span class="cn">FALSE</span>)           </span>
+<span id="cb125-15"><a href="#cb125-15" aria-hidden="true" tabindex="-1"></a>    x[badinterviewer] <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(x[badinterviewer])         </span>
+<span id="cb125-16"><a href="#cb125-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb125-17"><a href="#cb125-17" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">matrix</span>(y, <span class="at">ncol =</span> <span class="dv">1</span>)            </span>
+<span id="cb125-18"><a href="#cb125-18" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, x)            </span>
+<span id="cb125-19"><a href="#cb125-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb125-20"><a href="#cb125-20" aria-hidden="true" tabindex="-1"></a>    coef <span class="ot">&lt;-</span> <span class="fu">.lm.fit</span>(x, y)<span class="sc">$</span>coef          </span>
+<span id="cb125-21"><a href="#cb125-21" aria-hidden="true" tabindex="-1"></a>    save <span class="ot">&lt;-</span> <span class="fu">c</span>(save, coef[<span class="dv">2</span>])            </span>
+<span id="cb125-22"><a href="#cb125-22" aria-hidden="true" tabindex="-1"></a>  }         </span>
+<span id="cb125-23"><a href="#cb125-23" aria-hidden="true" tabindex="-1"></a>  save <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(save)          </span>
+<span id="cb125-24"><a href="#cb125-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(save, <span class="fu">aes</span>(<span class="at">x =</span> save)) <span class="sc">+</span> <span class="fu">geom_density</span>() <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> beta1)         </span>
+<span id="cb125-25"><a href="#cb125-25" aria-hidden="true" tabindex="-1"></a>})          </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="profvis html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-b8229e9ff769a628331b" style="width:100%;height:600px;"></div>
+<script type="application/json" data-for="htmlwidget-b8229e9ff769a628331b">{"x":{"message":{"prof":{"time":[1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,12,12,13,13,14,14,15,15,15,15,16,16,17,17,18,18,19,19,19,20,20,21,21,22,22,22,23,23,24,24,25,25,26,26,27,27,28,28,29,29,30,30,31,31,32,32,33,33,33,34,34,35,35,36,36,37,37,38,38,39,39,40,40,41,41,42,42,43,43,44,44,45,45,46,46,46,46,47,47,48,48,49,49,49,49,50,50,50,50,51,51,52,52,53,53,54,54,55,55,56,56,57,57,58,58,58,58,59,59,60,60,61,61,62,62,63,63,63,64,64,64,65,65,65,66,66,66,67,67,67,68,68,68,69,69,70,70,71,71,72,72,73,73,74,74,74,74,75,75,76,76,77,77,78,78,79,79,80,80,81,81,81,81,82,82,83,83,84,84,84,85,85,85,85,86,86,87,87,87,87,88,88,89,89,90,90,91,91,92,92,92,92,93,93,94,94,94,94,94],"depth":[3,2,1,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,4,3,2,1,2,1,2,1,4,3,2,1,2,1,2,1,2,1,3,2,1,2,1,2,1,3,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,3,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,4,3,2,1,2,1,2,1,4,3,2,1,4,3,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,4,3,2,1,2,1,2,1,2,1,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,2,1,2,1,2,1,2,1,2,1,4,3,2,1,2,1,2,1,2,1,2,1,2,1,2,1,4,3,2,1,2,1,2,1,3,2,1,4,3,2,1,2,1,4,3,2,1,2,1,2,1,2,1,2,1,4,3,2,1,2,1,5,4,3,2,1],"label":["Rprof","profvis",".main","cb$putlabel","cmpSubsetDispatch","h","tryInline","cmpCall","cmp","h","tryInline","cmpCall","cmp","cmpComplexAssign","h","tryInline","cmpCall","cmp","h","tryInline","cmpCall","cmp","cmpForBody","h","tryInline","cmpCall","cmp","genCode","compile","compiler:::tryCompile",".main","matrix",".main","rnorm",".main","rnorm",".main","c",".main",".Call",".main","rnorm",".main","c",".main",".Call",".main","rnorm",".main","y <- beta0 + beta1*x + rnorm(n)\t\t\t","force","profvis",".main","rnorm",".main","matrix",".main","badinterviewer <- sample(1:n, .25*n, replace = FALSE)\t\t\t","force","profvis",".main","c",".main",".lm.fit",".main",".Call",".main","sample.int","sample",".main","c",".main","rnorm",".main","sample.int","sample",".main",".Call",".main","c",".main","c",".main","c",".main","c",".main","all",".main","cbind",".main","c",".main","c",".main","c",".main","sample.int","sample",".main","rnorm",".main","c",".main","c",".main","c",".main","rnorm",".main","c",".main","rnorm",".main","c",".main","matrix",".main",".Call",".main","rnorm",".main","c",".main","y <- matrix(y, ncol = 1)\t\t\t","force","profvis",".main","rnorm",".main","c",".main","badinterviewer <- sample(1:n, .25*n, replace = FALSE)\t\t\t","force","profvis",".main","x[badinterviewer] <- ceiling(x[badinterviewer])\t\t\t","force","profvis",".main","c",".main","c",".main","all",".main","cbind",".main","c",".main","sample",".main","c",".main","stopifnot","sample.int","sample",".main","rnorm",".main","rnorm",".main","c",".main","c",".main","<GC>","c",".main","<GC>","c",".main","<GC>","c",".main","<GC>","c",".main","<GC>","c",".main","<GC>","c",".main","c",".main","c",".main","c",".main",".Call",".main",">",".main","x[badinterviewer] <- ceiling(x[badinterviewer])\t\t\t","force","profvis",".main","c",".main","rnorm",".main","c",".main","c",".main","c",".main","rnorm",".main","badinterviewer <- sample(1:n, .25*n, replace = FALSE)\t\t\t","force","profvis",".main","c",".main","c",".main","sample.int","sample",".main","stopifnot","sample.int","sample",".main","c",".main","x <- rnorm(n)\t\t\t","force","profvis",".main",".lm.fit",".main","rnorm",".main","c",".main","matrix",".main","stopifnot","sample.int","sample",".main","c",".main","deparse","mode","deparse","+.gg",".main"],"filenum":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,1,null,1,null,1,null,1,null,1,null,null,null,1,null,1,null,null,null,1,null,1,null,null,null,1,null,1,null,1,null,null,null,1,null,1,null,null,null,null,1,null,1,null,1,null,null,1,null,null,null,1,null,1,null,1,null,1,null,null,null,1,null,1,null,1,null,1,null,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,null,null,1,null,1,null,1,null,null,null,1,null,1,null,1,null,null,null,1,null,null,null,1,null,1,null,null,null,1,null,1,null,1,null,1,null,null,null,1,null,1,null,1,null,1,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,1,null,1,null,1,null,null,null,null,null,1,null,null,null,1,null,1,null,1,null,1,null,1,null,1,null,1,null,null,null,1,null,1,null,null,1,null,null,null,1,null,1,null,1,null,null,null,1,null,1,null,1,null,1,null,null,null,1,null,1,null,null,null,null,null,null],"linenum":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,9,null,17,null,10,null,10,null,21,null,null,null,10,null,21,null,null,null,11,null,11,null,null,null,10,null,17,null,14,null,null,null,21,null,20,null,null,null,null,14,null,21,null,10,null,null,14,null,null,null,21,null,21,null,21,null,21,null,null,null,18,null,21,null,21,null,21,null,null,14,null,11,null,21,null,21,null,21,null,11,null,21,null,10,null,21,null,17,null,null,null,10,null,21,null,17,null,null,null,10,null,21,null,14,null,null,null,15,null,null,null,21,null,21,null,null,null,18,null,21,null,14,null,21,null,null,null,14,null,11,null,11,null,21,null,21,null,null,21,null,null,21,null,null,21,null,null,21,null,null,21,null,null,21,null,21,null,21,null,21,null,null,null,null,null,15,null,null,null,21,null,10,null,21,null,21,null,21,null,11,null,14,null,null,null,21,null,21,null,null,14,null,null,null,14,null,21,null,10,null,null,null,20,null,11,null,21,null,17,null,null,null,14,null,21,null,null,null,null,null,null],"memalloc":[193.833343505859,193.833343505859,193.833343505859,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,193.988075256348,195.728942871094,195.728942871094,200.768249511719,200.768249511719,204.023635864258,204.023635864258,206.969337463379,206.969337463379,212.253440856934,212.253440856934,217.288818359375,217.288818359375,224.93620300293,224.93620300293,228.858543395996,228.858543395996,233.186767578125,233.186767578125,237.881874084473,237.881874084473,237.881874084473,237.881874084473,246.331161499023,246.331161499023,250.269325256348,250.269325256348,254.474418640137,254.474418640137,254.474418640137,254.474418640137,257.946739196777,257.946739196777,260.01252746582,260.01252746582,263.396095275879,263.396095275879,269.56307220459,269.56307220459,269.56307220459,274.162406921387,274.162406921387,278.447875976562,278.447875976562,283.960144042969,283.960144042969,283.960144042969,289.12239074707,289.12239074707,294.212882995605,294.212882995605,299.578239440918,299.578239440918,307.295745849609,307.295745849609,313.312934875488,313.312934875488,319.253387451172,319.253387451172,325.049896240234,325.049896240234,330.94352722168,330.94352722168,337.113655090332,337.113655090332,341.310562133789,341.310562133789,347.469947814941,347.469947814941,347.469947814941,351.624671936035,351.624671936035,357.29402923584,357.29402923584,362.701972961426,362.701972961426,368.373069763184,368.373069763184,374.150764465332,374.150764465332,379.670913696289,379.670913696289,384.427001953125,384.427001953125,389.06746673584,389.06746673584,396.076950073242,396.076950073242,401.257041931152,401.257041931152,407.312149047852,407.312149047852,415.523208618164,415.523208618164,423.242744445801,423.242744445801,423.242744445801,423.242744445801,432.203758239746,432.203758239746,439.431732177734,439.431732177734,448.761512756348,448.761512756348,448.761512756348,448.761512756348,457.595352172852,457.595352172852,457.595352172852,457.595352172852,465.560073852539,465.560073852539,473.108810424805,473.108810424805,480.69408416748,480.69408416748,487.82056427002,487.82056427002,493.41381072998,493.41381072998,502.453025817871,502.453025817871,508.532638549805,508.532638549805,514.973342895508,514.973342895508,514.973342895508,514.973342895508,520.596549987793,520.596549987793,532.42903137207,532.42903137207,540.42391204834,540.42391204834,546.782440185547,546.782440185547,552.379180908203,552.379180908203,552.379180908203,490.400451660156,490.400451660156,490.400451660156,432.873352050781,432.873352050781,432.873352050781,354.219329833984,354.219329833984,354.219329833984,281.823295593262,281.823295593262,281.823295593262,203.116691589355,203.116691589355,203.116691589355,198.895141601562,198.895141601562,204.938636779785,204.938636779785,210.565460205078,210.565460205078,217.103256225586,217.103256225586,226.118026733398,226.118026733398,236.838905334473,236.838905334473,236.838905334473,236.838905334473,246.876579284668,246.876579284668,254.675071716309,254.675071716309,263.942977905273,263.942977905273,271.561096191406,271.561096191406,279.663177490234,279.663177490234,284.378028869629,284.378028869629,291.235679626465,291.235679626465,291.235679626465,291.235679626465,297.962829589844,297.962829589844,304.658515930176,304.658515930176,311.324005126953,311.324005126953,311.324005126953,318.283592224121,318.283592224121,318.283592224121,318.283592224121,326.696029663086,326.696029663086,333.591842651367,333.591842651367,333.591842651367,333.591842651367,340.36205291748,340.36205291748,344.914588928223,344.914588928223,349.762031555176,349.762031555176,356.094390869141,356.094390869141,363.544296264648,363.544296264648,363.544296264648,363.544296264648,371.22533416748,371.22533416748,379.187896728516,379.187896728516,379.187896728516,379.187896728516,379.187896728516],"meminc":[0,0,0,0.154731750488281,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.74086761474609,0,5.039306640625,0,3.25538635253906,0,2.94570159912109,0,5.28410339355469,0,5.03537750244141,0,7.64738464355469,0,3.92234039306641,0,4.32822418212891,0,4.69510650634766,0,0,0,8.44928741455078,0,3.93816375732422,0,4.20509338378906,0,0,0,3.47232055664062,0,2.06578826904297,0,3.38356781005859,0,6.16697692871094,0,0,4.59933471679688,0,4.28546905517578,0,5.51226806640625,0,0,5.16224670410156,0,5.09049224853516,0,5.3653564453125,0,7.71750640869141,0,6.01718902587891,0,5.94045257568359,0,5.7965087890625,0,5.89363098144531,0,6.17012786865234,0,4.19690704345703,0,6.15938568115234,0,0,4.15472412109375,0,5.66935729980469,0,5.40794372558594,0,5.67109680175781,0,5.77769470214844,0,5.52014923095703,0,4.75608825683594,0,4.64046478271484,0,7.00948333740234,0,5.18009185791016,0,6.05510711669922,0,8.2110595703125,0,7.71953582763672,0,0,0,8.96101379394531,0,7.22797393798828,0,9.32978057861328,0,0,0,8.83383941650391,0,0,0,7.9647216796875,0,7.54873657226562,0,7.58527374267578,0,7.12648010253906,0,5.59324645996094,0,9.03921508789062,0,6.07961273193359,0,6.44070434570312,0,0,0,5.62320709228516,0,11.8324813842773,0,7.99488067626953,0,6.35852813720703,0,5.59674072265625,0,0,-61.9787292480469,0,0,-57.527099609375,0,0,-78.6540222167969,0,0,-72.3960342407227,0,0,-78.7066040039062,0,0,-4.22154998779297,0,6.04349517822266,0,5.62682342529297,0,6.53779602050781,0,9.0147705078125,0,10.7208786010742,0,0,0,10.0376739501953,0,7.79849243164062,0,9.26790618896484,0,7.61811828613281,0,8.10208129882812,0,4.71485137939453,0,6.85765075683594,0,0,0,6.72714996337891,0,6.69568634033203,0,6.66548919677734,0,0,6.95958709716797,0,0,0,8.41243743896484,0,6.89581298828125,0,0,0,6.77021026611328,0,4.55253601074219,0,4.84744262695312,0,6.33235931396484,0,7.44990539550781,0,0,0,7.68103790283203,0,7.96256256103516,0,0,0,0],"filename":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,null,null,null,null]},"interval":10,"files":[{"filename":"<expr>","content":"profvis({\t\t\t\n  reps <- 10000\t\t\t\n  n <- 100\t\t\t\n  beta0 <- 2\t\t\t\n  beta1 <- .7\t\t\t\n  \n  save <- vector()\t\t\t\n  \n  save <- for (i in 1:reps) {\t\t\t\n    x <- rnorm(n)\t\t\t\n    y <- beta0 + beta1*x + rnorm(n)\t\t\t\n    \n    # Redondear a 2 decimales\t\t\t\n    badinterviewer <- sample(1:n, .25*n, replace = FALSE)\t\t\t\n    x[badinterviewer] <- ceiling(x[badinterviewer])\t\t\t\n    \n    y <- matrix(y, ncol = 1)\t\t\t\n    x <- cbind(1, x)\t\t\t\n    \n    coef <- .lm.fit(x, y)$coef\t\t\t\n    save <- c(save, coef[2])\t\t\t\n  }\t\t\t\n  save <- data.frame(save)\t\t\t\n  ggplot(save, aes(x = save)) + geom_density() + geom_vline(xintercept = beta1)\t\t\t\n})\t\t\t","normpath":"<expr>"}],"prof_output":"C:\\Users\\MoisesG\\AppData\\Local\\Temp\\Rtmpod2JMl\\file3e083fff5b28.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Es posible usar el argumento interval para personalizar el intervalo de muestreo (interval = 0.01 -&gt; 10 milisegundos). Se sugiere evitar el uso de periodos de intervalo muy cortos (e.g., menores a 5 milisegundos). Esto puede provocar resultados no precisos. Incluso si el profiling corresponde a un código muy rápido es mejor utilizar microbenchmark el cual produce resultados más precisos a intervalos más cortos.</p>
+</section>
+</section>
+<section id="actividades" class="level1">
+<h1>5. Actividades</h1>
+<section id="aplicación-de-apply" class="level2">
+<h2 class="anchored" data-anchor-id="aplicación-de-apply">5.1. Aplicación de <code>*apply</code></h2>
+<p>Utilice el archivo <code>SEST17.csv</code> que corresponde a los resultados del examen ser estudiante del periodo lectivo 2016-2017. En el análisis aplique <code>lapply()</code> para obtener:</p>
+<ul>
+<li><p>La separación (split) de los datos por el campo provincia <code>id_prov</code>.</p></li>
+<li><p>La desviación estándar de las notas de matemáticas (<code>imat</code>) agrupados por el campo provincia <code>id_prov</code>.</p></li>
+<li><p>Suponga que existe una relación entre las calificación obtenida en Matemáticas con la obtenida en Lengua y Literatura. Aplique una regresión lineal agrupados por el campo provincia <code>id_prov</code>.</p></li>
+<li><p>La gráfica de los datos y la recta ajustada a los datos agrupados por el campo provincia <code>id_prov</code>.</p></li>
+<li><p>Guarde los resultados anteriores en una lista general agrupados por el campo provincia <code>id_prov</code>.</p></li>
+</ul>
+</section>
+<section id="aplicación-de-microbenchmark-y-profvis" class="level2">
+<h2 class="anchored" data-anchor-id="aplicación-de-microbenchmark-y-profvis">5.2. Aplicación de <code>microbenchmark</code> y <code>profvis</code></h2>
+<ul>
+<li>Crear un código donde se compare el rendimiento de dos funciones distintas, utilice <code>microbenchmark</code> y <code>profvis</code>.</li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

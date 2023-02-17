@@ -1,0 +1,933 @@
+---
+title: "Funciones"
+author: "Moises Gualapuro"
+format: 
+  html: 
+    toc: true
+editor: visual
+---
+
+---
+title: '**R para computación de altas prestaciones**'
+subtitle: '**1.3 Funciones**'
+author: "Moisés Gualapuro"
+date: "`r Sys.Date()`"
+output:
+  pdf_document
+---
+
+```{r warning=FALSE, message=FALSE,echo=FALSE}
+rm(list=ls())         # borrar todo lo que haya en memoria
+options(scipen=999)   # evitar notacion cientifica
+options(encoding = "utf-8")
+
+#Instalar librerias necesarias
+if(!require(knitr)){install.packages("knitr")}
+if(!require(readxl)){install.packages("readxl")}
+
+library(knitr)
+
+# Global options
+ options(max.print="75")
+ opts_chunk$set(message=FALSE,
+                warning=FALSE)
+  opts_knit$set(width=75)
+```
+
+![](./img/ikiam.png)
+
+Moisés Gualapuro - `moises.gualapuro@ikiam.edu.ec` - Universidad Regional Amazónica IKIAM, Tena (Ecuador)
+
+
+# CONTENIDO
+
+# 1. Resultados de aprendizaje
+
+Al finalizar la unidad, el estudiante será capaz de:
+
+-   Escribir funciones para analizar datos.
+
+-   Utilizar funciones para analizar datos.
+
+# 2. Funciones
+
+Existen varias funciones pre-cargadas en R las cuales puede ser utilizadas a la vez para esscribir nuevas funciones.
+
+Se tiene operaciones para las cuales no se tiene funciones definidas, por lo tanto deben ser escritas. Una función es un bloque de instrucciones que pueden ser utilizadas continuamente en un programa, es decir, permite **automatizar operaciones**. Generar funciones es más productivo que copiar y pegar las instrucciones cada vez que se necesita, por lo tanto tiene las siguientes ventajas:
+
+1.  Se asigna un identificador que permite reconocer lo que realiza la función.
+
+2.  Se requiere pocos cambios, en general solamente los argumentos.
+
+3.  Se evita errores accidentales que pueden ocurrir al copiar y pegar.
+
+4.  Se puede utilizar para escribir nuevas funciones.
+
+5.  Se tiene una forma compacta para operar.
+
+6.  Facilita el aprendizaje del lenguaje de programación.
+
+La estructura de una función es la siguiente:
+
+    nombreFuncion <- function(argumento1, argumento2, ...){
+      instruciones
+      return(resultado)
+    }
+
+Se requiere una función cuando se repite (copia y pega) una instrucción por más de tres veces. Como en el siguiente caso ejemplo, donde se busca calcular la reescalar un valor con la fórmula:
+
+$$x_{i} = \dfrac{x-mean(x)}{sd(x)}$$
+
+```{r}
+df <- data.frame(a = rnorm(10),
+ b = rnorm(10),
+ c = rnorm(10),
+ d = rnorm(10))
+
+df$a <- (df$a - mean(df$a, na.rm = TRUE)) / (sd(df$a, na.rm = TRUE))
+df$b <- (df$b - mean(df$b, na.rm = TRUE)) / (sd(df$a, na.rm = TRUE)) # error
+df$c <- (df$c - mean(df$c, na.rm = TRUE)) / (sd(df$c, na.rm = TRUE))
+df$d <- (df$d - mean(df$d, na.rm = TRUE)) / (sd(df$d, na.rm = TRUE))
+```
+
+En este ejemplo, se repite una instrucción que podríamos optimizar generando una función. Antes de continuar vamos a revisar funciones con las cuales tenemos mayor familiaridad.
+
+## Funciones precargadas en R
+
+Se tiene muchas funciones que ya están predefinidas en R, aquí algunas de ellas:
+
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Tipo                | Función                                                                                          | Descripción                                                                                                        |
++=====================+==================================================================================================+====================================================================================================================+
+| **Numérico**        | `abs(x)`                                                                                         | Valor absoluto [ `abs(-32.3)=32.3`]                                                                                |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `sqrt(x)`                                                                                        | Raíz cuadrada [ `sqrt(25)=5`]                                                                                      |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `ceiling(x)`                                                                                     | Entero superior [ `ceiling(2.3)=3`]                                                                                |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `floor(x)`                                                                                       | Entero inferior [ `floor(2.3)=2`]                                                                                  |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `trunc(x)`                                                                                       | Truncar, es seleccionar solamente el valor entero [ `trunc(2.3)=2`]                                                |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `round(x, digits=n)`                                                                             | Redondear [ `round(2.33273427247, digits=4)=2.3327`]                                                               |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `signif(x, digits=n)`                                                                            | Cifras significativas [ `signif(2.33273427247, digits=4)=2.3327`]                                                  |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `cocs(x), sin(x), tan(x)`                                                                        | Funciones trigonométricas [ `cos(pi)=-1`]                                                                          |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `log(x), lo10(x), log2(x), log(x, base)`                                                         | Logaritmos [ `logb(81 , 3)=4`]                                                                                     |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Texto**           | `substr(x, star=n1, stop=n2)`                                                                    | Extraer o reemplazar un "subtexto" en un vector de exto, `x<- "Bienvenido al curso"`                               |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `substr(x, 4, 12)="nvenido a"`                                                                                     |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `substr(x, 4, 12)<-"correran al mar", x = "Biecorreran l curso"`                                                   |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `grep(patrón, x ignore.case = FALSE, fixed=FALSE)`                                               | Busca un patrón en un vector de textos y devuelve los índice donde encuentra el patrón.                            |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `x<- c("El", "curso", "con", "R")`                                                                                 |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `grep("o", x, fixed = TRUE) = 2 3`]                                                                                |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | **`sub(`***`patrón`***`,`** *`reemplazo`***`,`** *`x`***`, ignore.case =`**`FALSE, fixed=FALSE)` | Busca un patrón en un texto y reemplaza.                                                                           |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `x<- c("El", "curso", "con", "R")`                                                                                 |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `sub("r", "*", x, fixed = TRUE) = c("El", "cu*so", "con", "R")`                                                    |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `strsplit(x, separador)`                                                                         | Separa los caracteres de un texto con separador.                                                                   |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `x<- "Bienvenidos"`                                                                                                |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `strsplit(x, "")="B" "i" "e" "n" "v" "e" "n" "i" "d" "o" "s"`                                                      |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `paste(x, sep="")`                                                                               | Concatena elementos utilizando un separador.                                                                       |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `paste("hola", "mundo", sep= "*")="hola*mundo"`                                                                    |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `paste("hola", 1:3, sep= "-")="hola-1" "hola-2" "hola-3"`                                                          |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `paste("Hoy es", date(), sep= ":: ")="Hoy es:: Tue Oct  6 08:24:39 2020"`                                          |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `toupper(x)`                                                                                     | Convierte un texto en mayúsculas                                                                                   |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `toupper("Quito")="QUITO"`                                                                                         |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `tolower(x)`                                                                                     | Convierte un texto en minúsculas                                                                                   |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `tolower("Este LUNES")="este lunes"`                                                                               |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Estadística         | `dnorm(x)`                                                                                       | Función de densidad normal                                                                                         |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `pnorm(x)`                                                                                       | Probabilidad acumulativa normal de x                                                                               |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `qnorm(x)`                                                                                       | Quantil normal                                                                                                     |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `rnorm(n, m=0, sd =1)`                                                                           | Desviación normal aleatorio `n`, con promedio `m` y desviación estándar `sd`.                                      |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `mean(x, trim=0, na.rm=FALSE)`                                                                   | Promedio de un vector `x`, donde `na.rm=TRUE` remueve valores `NaN` y `trim=0.05`elimina el 5% de valores extremos |
+|                     |                                                                                                  |                                                                                                                    |
+|                     |                                                                                                  | `mean(x, trim=0.05, na.rm=TRUE)`                                                                                   |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `sd(x)`                                                                                          | Calcula la desviación estandar de un conjunto de valores.                                                          |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `median(x)`                                                                                      | Calcula la media de un conjunto de valores.                                                                        |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `range(x)`                                                                                       | Calcula el rango de un conjunto de valores.                                                                        |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `quantile(x, prob)`                                                                              | Calcula el quantil de un conjunto de valores, dad una probabilidad (entre 0 y 1).                                  |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `sum(x)`                                                                                         | Calcula la suma de un conjunto de valores.                                                                         |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `min(x)`                                                                                         | Calcula el valor mínimo de un conjunto de valores.                                                                 |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `max(x)`                                                                                         | Calcula el valor máximo de un conjunto de **valores.**                                                             |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+| **Otras funciones** | `seq(desde, hasta, paso)`                                                                        | Genera un vector con una secuencia de números dados el valor inicial, el valor final y el "paso" que se define.    |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `rep(x, n)`                                                                                      | Genera un vector donde el valor `x` se repite por `n` veces.                                                       |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+|                     | `cut(x, n)`                                                                                      | Divide una variable continua `x` en factores de `n` niveles.                                                       |
++---------------------+--------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------+
+
+: Ejemplos de funciones predefinidas en R
+
+Se tiene más funciones predeterminadas con las cuales se puede ir familiarizando a medida que se entrena en R.
+
+## Funciones simples
+
+A continuación se crea la función `cuadrado`, donde el único argumento es la variable `x` y el resultado es $$y = x^{2}$$
+
+```{r}
+# Forma de operar extensa
+x<- 1
+y = x**2
+y
+
+x<- 2
+y = x**2
+y
+
+x<- 3
+y = x**2
+y
+
+
+# Forma de operar con una función 
+cuadrado <- function(x) {
+  y = x**2
+  return(y)
+}
+
+# Se evalúa la función para algún valor
+cuadrado(2)
+cuadrado(c(1,2,3,4,5,6,7,78,934))
+cuadrado(seq(1,10,0.2))
+cuadrado(1:23)
+```
+
+```{r}
+# Forma corta de la función cuadrado
+(function(x) x**2)(2) # Evalúa para el valor 2 la función x^2
+
+# Otra forma corta
+cuadrado2 <- function(x) x**2
+cuadrado2(c(1,2,3,476))
+```
+
+Cuando se crean las funciones se pueden predefinir los valores de los parámetros, es decir si no se coloca un valor, entonces tomará el valor predeterminado.
+
+```{r}
+# función potencia
+potencia <- function(x=2, y=1){
+  pot = x**y
+  return(pot)
+}
+
+# Argumentos sin valores asignados 
+potencia()
+
+# Definiendo el valor para un argumento
+potencia(x=3)
+potencia(y=3)
+
+# Definiendo valores para ambos argumentos
+potencia(x=5, y=3)
+potencia(5,3)
+
+# Función potencia aplicado a vectores
+potencia(x = c(1,2,3,4,5,6), y=4)
+```
+
+## Función simple 2
+
+Para aplicar la función reescalar, se requiere utilizar la fórmula previamente indicada
+
+```{r}
+df <- data.frame(a = rnorm(10),
+ b = rnorm(10),
+ c = rnorm(10),
+ d = rnorm(10))
+
+reescalar <- function(x){
+  y = (x-mean(x))/sd(x)
+  return(y)
+}
+
+reescalar(df$a)
+
+colnamesdf <- colnames(df)
+for (i in 1:ncol(df)){
+  print(paste(colnamesdf[i], reescalar(df[,i])))
+}
+
+```
+
+## Función con estrucuturas de control
+
+Cuando se desea clasificar o agregar, se puede utilizar una función con estrucuturas de control. 
+
+```{r}
+aspirantes <- data.frame(Aspirante = paste("Aspirante",seq(1,20,by=2)),
+                         Edad = sample(15:30,10,FALSE),
+                         Talla = sample(100:200,10,FALSE),
+                         TipoSangre = sample(c("A", "B", "O"),10,TRUE),
+                         Instruccion = sample(c("Primaria", "Secundaria", "TercerNivel", "CuartoNivel"),10,TRUE) 
+                         )
+
+item_promedio <- function(x) {
+    total <- 0
+    n <- length(x)
+    for (i in seq_along(x)) {
+      total <- total + x[i] / n
+    }
+    total
+  }
+
+item_promedio(aspirantes$Edad)
+
+```
+
+
+# 2. Funciones apply
+
+## 2.1. Repaso
+
+### 2.1.1. Estructura de una función
+
+Las funciones tienen un nombre, argumentos, instrucciones y resultados.
+
+```{.r}
+    nombre_funcion <- function(arg1, arg2, ...){
+      instruccion1
+      instruccion2
+      ...
+      return(resultado)
+    }
+```
+
+Por ejemplo el cálculo del perímetro de un conjunto de rectángulos con diferentes valores de ancho y largo:
+
+```{r}
+# medidas de rectángulos
+anchos <- seq(1,6)
+largos <- seq(4,9)
+
+# función perímetro
+perimetro <- function(x,y){
+  perimetro = 2*(x+y)
+  return(perimetro)
+}
+for (i in 1:length(anchos)){
+  per_temp = perimetro(anchos[i], largos[i])
+  cat("Ancho: ", anchos[i], ", Largo: ", largos[i],
+      ", Perímetros:", per_temp, "\n")
+}
+```
+
+```{r}
+# funciones
+cuadrado <- function(x) x^2
+desviacion <- function(x) x- mean(x)
+x <- runif(20000000)
+
+# forma anidada
+sqrt(mean(cuadrado(desviacion(x))))
+
+# forma individual
+res <- desviacion(x) 
+res <- cuadrado(res) 
+res <- mean(res) 
+res <- sqrt(res) 
+res
+
+# forma concatenada
+library(dplyr)
+x %>% desviacion() %>% cuadrado() %>% mean() %>% sqrt()
+
+```
+
+```{r}
+# Tiempos de funciones
+# tiempo forma anidada
+tiempo.anidada <- system.time( sqrt(mean(cuadrado(desviacion(x)))) )
+
+# tiempo forma individual
+tiempo.individual1 <- system.time( res <- desviacion(x) )
+tiempo.individual2 <- system.time( res <- cuadrado(res) )
+tiempo.individual3 <- system.time( res <- mean(res) )
+tiempo.individual4 <- system.time( res <- sqrt(res) )
+tiempo.individual <- rbind(tiempo.individual1, tiempo.individual2, 
+                               tiempo.individual3, tiempo.individual4)
+
+# forma concatenada
+library(dplyr)
+tiempo.concatenada <- system.time( x %>% desviacion() %>% cuadrado() %>% mean() %>% sqrt() )
+
+# tiempos 
+df_tiempos <- rbind(tiempo.anidada, tiempo.individual, tiempo.concatenada)
+df_tiempos
+```
+
+### 2.1.2 Librería `dplyr`
+
+El paquete **dplyr** de R es parte del framework tidyverse de R y tiene las siguientes funciones:
+
+-   `filter()`,
+
+-   `select()`,
+
+-   `arrange()`,
+
+-   `mutate()`,
+
+-   `group_by()`, y
+
+-   `summarise()`
+
+A continuación un ejemplo donde se concantenan estas funciones para analizar los datos del dataset `diamonds`.
+```{r }
+library(dplyr)
+library(ggplot2)
+diamonds %>% filter(carat < 3 &
+           cut %in% c("Fair","Premium", "Ideal") &
+           color %in% c("D", "E", "F")) %>%
+  dplyr::select(color, clarity, cut, carat, price) %>%
+  mutate(ppc = price / carat, 
+         ppc_rnd = round(ppc, 1))%>% 
+  group_by(cut, color) %>%
+  summarise(min_p = min(price), mean_p = mean(price), 
+            max_p = max(price), mean_ppc = mean(ppc_rnd))
+```
+
+## 2.2 Familia `*apply`
+
+Se utilizará las funciones de la familia `apply` para obtener lo siguiente:
+
+-   Formas más eficientes que los bucles para aplicar funciones sobre vectores, matrices, data frame.
+
+-   Evaluar la posibilidad de usar métodos más eficientes:
+
+    -   Tipos de datos de entrada: **vector, matriz, data frame...**.
+
+    -   Subconjunto (subset) de datos: **filas, columnas, todos los valores...**
+
+    -   Tipo de respuesta
+
+La familia de comandos `*apply` permite optimizar estos procesos (**apply**, **lapply** , **sapply**, vapply, mapply, rapply, and tapply).
+
+R es un lenguaje de programación funcional. Por ejemplo, el símbolo `<-` se define como una *función de asignación*.
+
+```{r assign}
+a <- 10
+"<-"(b, 20)
+a
+b
+"+"(a, b)
+```
+
+Cada operación en R responde a la ejecución de una función. Todas las funciones `*apply` se caracterizan por tener **funciones como un argumento**, por esto son llamados **funcionales**. Estos funcionales, toman un objeto y una función como entrada (argumentos) y aplican dicha función a cada entrada (fila, columna, elemento) del objeto. La diferencia entre las distintas funciones `*apply` es básicamente el tipo de objeto que manipulan. El esquema generalizado tomado de <https://adv-r.hadley.nz>.
+
+<br>
+
+```{r, echo = FALSE, out.width='50%', fig.align='center'}
+knitr::include_graphics('./img/map.png')
+```
+
+<br>
+
+### 2.2.1. Función `apply()`
+
+Tiene tres argumentos principales:
+
+| Argumento | Descripción                                                              |
+|-----------|--------------------------------------------------------------------------|
+| `X`       | Una matriz (o array) o un data.frame que puede reducirse a matriz.       |
+| `MARGIN`  | Especifica donde se aplica la función: **filas (1)** o **columnas (2)**. |
+| `FUN`     | La función a ser aplicada.                                               |
+
+Otros argumentos como `na.rm` pueden también ser indicados:
+
+#### Ejemplo 1: Retornar el producto de cada fila
+
+```{r}
+df1 <- matrix(c(seq(from=-10,to=10,by=0.1)),nrow=10,ncol=10)
+head(df1,2)
+apply(df1,1,prod)
+
+```
+
+#### Ejemplo 2: Retornar la suma de cada columna
+
+```{r}
+apply(df1,2,sum)
+```
+
+#### Ejemplo 3: Retornar una nueva matriz cuyos valores son 'm' elevado al cubo.
+
+```{r}
+apply(df1,c(1,2),function(x) x^3) 
+```
+
+#### Ejemplo 4: Retornar el promedio de cada variable en el dataset `diamonds`.
+
+```{r apply}
+library(ggplot2) # diamonds es un dataset parte de esta librería
+class(diamonds)
+str(diamonds) # las columnas 2, 3 y 4 son de tipo factor
+
+## subset diamonds de las columnas numéricas
+diamonds_num <- diamonds[, -c(2:4)] # todas las columnas, excepto del 2 al 4
+
+## aplicar la función para obtener el promedio de todas las columnas
+# normal
+diamonds_mean1 <- data.frame(colnames(diamonds_num))
+for (i in 1:ncol(diamonds_num)){
+  prom_temp = mean(unlist(diamonds_num[,i]), na.rm = TRUE)
+  diamonds_mean1$promedios[i] = prom_temp
+}
+diamonds_mean1
+
+# Utilizando apply()
+diamonds_mean2 <- apply(diamonds_num, 2, mean, na.rm = TRUE)
+diamonds_mean2
+```
+
+Para una estructura tipo matriz, `apply()` es la opción más adecuada. Esta es más rápida que estructuras `for()` las cuales son estándar en otros lenguajes como Python o C++.
+
+### 2.2.2. Funciones `lapply()` y `sapply()`
+
++------------------+-------------------------------------+-------------------------------------------------------------------------------+
+| Argumento        | X                                   | Funcion                                                                       |
++==================+=====================================+===============================================================================+
+| `lapply()`       | lista (inicial \*\*l\*\* de lista)  | Se aplica a cada elemento de la lista                                         |
++------------------+-------------------------------------+-------------------------------------------------------------------------------+
+| `sapply()`       | lista (inicial \*\*s\*\* de simple) | Se aplica a cada elemento de la lista y la respuesta es un vector o dataframe |
++------------------+-------------------------------------+-------------------------------------------------------------------------------+
+
+Ejemplo de lista:
+
+```{r lists}
+lst <- list(1:10, 
+            "Ambato", 
+            mean,
+            mean(1:100),
+            function(x) x + 1, 
+            data.frame(col1 = rnorm(10), col2 = runif(10)),
+            matrix(1:9, 3, 3))
+lst
+```
+
+Para acceder a los elementos de una lista se requiere el uso de corchetes `[[i]]` donde `i` es la posición en la lista y se utiliza para iterar en los elementos de las listas.
+
+#### Ejemplo 1: ilustrar el uso de `lapply()` y `sapply()`
+
+```{r}
+A<-matrix(1:9, 3,3)
+B<-matrix(4:15, 4,3)
+C<-matrix(8:10, 3,2)
+lista.matrices<-list(A,B,C) 
+
+# En cada elemento de la lista, mostrar el elemento en la posición [3,2] 
+# normalmente
+for (i in 1:length(lista.matrices)){
+  print(lista.matrices[[i]][3,2])
+}
+
+# Utilizando lapply() o sapply()
+lapply(lista.matrices,"[", 3,2 )
+sapply(lista.matrices,"[", 3,2 )
+```
+
+#### Ejemplo 2: `lapply()` y `sapply()` con funciones propias
+En este ejemplo sencillo se utilizará la fórmula: $$x^2-2x+1$$
+
+```{r}
+lapply(-2:3, function(i) i^2-2*i+1)
+sapply(-2:3, function(i) i^2-2*i+1)
+```
+
+#### Ejemplo 3: `lapply()` y `sapply()` con el dataset `diamonds`
+En un ejemplo práctico que considera análisis estadístico y visualización de resultados, generamos modelos lineales entre dos variables 'carat' y 'price' y sus correspondients gráficos de dispersión para todos los niveles de 'cut', pero únicamente para aquellos diamantes de 'color = D'.
+
+```{r lapply final}
+library(ggplot2)
+## Separar (split) el dataset diamonds por el tipo de corte (cut)
+cut_lst <- split(diamonds, f = diamonds$cut) # divide en dataframe por categorías de "cut"
+names(cut_lst)
+
+# lapply() sobre la lista de dataframes cut_lst
+diamonds_lapply <- lapply(seq(cut_lst), function(i) {
+  ## seleccionar solo los diamantes de color = D
+  dat <- cut_lst[[i]]
+  dat_d <- dat %>% filter(color == "E")
+  
+  ## calcular el modelo linear
+  lm1 <- lm(price ~ carat, data = dat_d)
+  
+  ## crear gráfico de dispersión
+  cut_plot <- ggplot(aes(x = carat, y = price), data = dat_d) +
+    geom_point(colour = "grey20", size = 0.1) +
+    stat_smooth(method = "lm", se = TRUE, 
+                fill = "violet", colour = "red", size =0.5) +
+    geom_text(data = NULL,
+              x = min(dat_d$carat, na.rm = TRUE) + 0.2,
+              y = max(dat_d$price, na.rm = TRUE),
+              label = unique(dat_d$cut)) + 
+    theme_minimal()
+  
+  ## retornar la data, el modelo lineal y la gráfica
+  return(list(data = dat_d,
+              modelo_lineal = lm1,
+              grafica = cut_plot))
+})
+
+## setear nombres de la lista para claridad 
+names(diamonds_lapply) <- names(cut_lst)
+
+# Mostrar resultados hasta segundo nivel de anidamiento
+str(diamonds_lapply,1) 
+```
+Los resultados en forma de lista facilitan el acceso rápido a cada item de la lista. 
+
+```{r list-scatter}
+diamonds_lapply$Premium
+```
+
+Para acceder a los elementos de las listas se pueden utilizar `$` utilizando los nombres de los elementos o `[[]]` con los índices de los elementos. 
+
+```{r}
+summary(diamonds_lapply$Premium$modelo_lineal)
+summary(diamonds_lapply[[4]][[2]])
+```
+
+# 3. Programación Funcional
+
+Estructura de una función, ejemplo del Teorema de Pitágoras: $$c^2 = a^2 + b^2$$
+
+```{r custom function}
+teoremaPitagoras <- function(a, b) {
+  c <- sqrt(a^2 + b^2)
+  return(c)
+}
+
+teoremaPitagoras(11,5)
+```
+
+## 3.1. Funcionales
+
+Los *funcionales* son funciones que toman otras funciones como argumentos. Usualmente se utilizan funciones precargadas de R (sum, mean, sd, var, etc), aunque se puede utilizar funciones personalizadas:
+
+```{r custom functional}
+df4 <- data.frame(a = sample(1:80, 5000, replace=T),
+                  b = sample(12:203, 5000, replace=T))
+
+result_pitagoras <- sapply( seq(nrow(df4)), function(i) teoremaPitagoras(df4[i, 1], df4[i, 2]))
+result_pitagoras[1:10]
+```
+
+## 3.2. Closures
+
+La contraparte de los funcionales son los llamados *closures*. Estas son funciones que retornan (o construyen) una función en base a algún argumento proporcionado. Consideremos la siguiente situación:
+
+Se tiene un conjunto de posibles variables predictoras (`pred`), un conjunto de variables de respuesta (`resp`) y el objetivo es identificar la mejor combinación que explica las varianzas.
+
+```{r closure rsq}
+### Data al azar
+set.seed(123)
+pred <- data.frame(pred1 = rnorm(100, 2, 1),
+                   pred2 = 1:100,
+                   pred3 = rpois(100, 2),
+                   pred4 = 200:101, 
+                   pred5 = runif(100, 1, 32))
+
+set.seed(234)
+resp <- data.frame(resp1 = 1:100,
+                   resp2 = rnorm(100, 2, 1),
+                   resp3 = 200:101,
+                   resp4 = runif(100, 2, 20))
+```
+
+Podríamos simplemente copiar y pegar sentencias para calcular cada combinación.
+
+```{r copy paste, eval = FALSE}
+# Combinaciones posibles 
+summary(lm(resp$resp1 ~ pred$pred1))$r.squared
+summary(lm(resp$resp1 ~ pred$pred1))$r.squared
+summary(lm(resp$resp3 ~ pred$pred1))$r.squared
+summary(lm(resp$resp4 ~ pred$pred1))$r.squared
+#....
+summary(lm(resp$resp1 ~ pred$pred5))$r.squared
+summary(lm(resp$resp2 ~ pred$pred5))$r.squared
+summary(lm(resp$resp3 ~ pred$pred5))$r.squared
+summary(lm(resp$resp4 ~ pred$pred5))$r.squared
+# ... etc
+```
+
+Esta forma de evaluar no es óptimo y es proclive a errores difíciles de rastrear en códigos más extensos. En este caso usar closures puede ser de gran ayuda.
+
+```{r calRsq}
+### definir un closure
+calcRsq <- function(pred) {
+  function(y) {
+    summary(lm(y ~ pred))$r.squared
+  }
+}
+```
+
+Ahora, tenemos una forma general de definir funciones para calcular valores de R-cuadrado:
+
+```{r closure pred1}
+## create la función usando pred$v1 como predictor
+calcRsq_pred1 <- calcRsq(pred$pred1)
+calcRsq_pred1(resp$resp1)
+```
+
+Usar una llamada explícita como la que acabamos de definir realmente no es de mucha ayuda, aunque hemos reducido la posibilidad de errores de escritura pues el predictor se encuentra fijo en la función `calcRsq_pred1()`. Ahora, dado que tenemos una función que calcula el valor R-cuadrado entre un predictor fijo y cualquier variable respuesta que se proporcione, podemos usar un funcional como `apply()` para calcular la relación entre el predictor y el conjunto de variables respuesta.
+
+```{r apply calcRsq_pred1}
+apply(resp, 2, calcRsq_pred1)
+```
+
+Podríamos complementar aún más nuestro beneficio utilizando `sapply()`, ahora calculemos cada posible combinación (preditor-respuesta) en un solo paso:
+
+```{r sapply clacRsq, warning = FALSE}
+sapply(seq(ncol(pred)), function(i) {
+  f <- calcRsq(pred[, i])
+  apply(resp, 2, f)
+})
+```
+
+Sintetizando:
+
+1.  iterar sobre las columnas de pred - `seq(ncol(pred))`,
+2.  definir una función `f` que setea el closure para usar la columna de la iteración actual; `f <- calcRsq(pred[, i])`, y
+3.  aplicar esta función `f` a todas las columnas de variables respuesta - `apply(resp, 2, f)`.
+
+Se ha evidenciado que la combinación de funcionales y closures es una forma poderosa, flexible y elegante de generalizar cálculos computacionales.
+
+
+
+# 4. Profiling y Benchmarking
+La optimización de los códigos por el método de prueba y error no es el adecuado. Para esto, R tiene herramientas que permite conocer cómo el código está usando el tiempo y la memoria de la máquina. Conociendo las partes del código con alto consumo de memoria o tiempo se puede plantear con rapidez estrategias de mejora de los códigos. Los paquetes `microbenchmark` y `profvis` se utilizan en esta revisión.
+
+## 4.1 Temporizador `microbenchmark`
+Es un paquete de R que es una alternativa con mayor precisión para `system.time()`. La precisión se debe a que este paquete devuelve los valores de tiempos en nanosegundos. Algunas de las características de `microbenchmark` son: 
+
+-   Es útil para ejecutar secciones pequeñas de código y evaluar su rendimiento, así como comparar la velocidad de varias funciones que tienen el mismo objetivo.
+
+-   La función del mismo nombre de este paquete ejecuta el código múltiples veces (100 por defecto) y provee un resumen de estadísticas del tiempo utilizado para ejecutar el código.
+
+-   La ventaja de este paquete es que toma en cuenta el tiempo invertido en el procesamiento de la función de microbenchmark por sí misma y de esta manera utiliza iteraciones de "warm-up" antes de ejecutar las iteraciones para el procesamiento estadístico.
+
+-   Se puede incluir múltiples líneas de código dentro de una única llamada de microbenchmark. Sin embargo, para obtener benchmarks independientes de cada línea de código se debe separarlas con una coma:
+
+``` {.r}
+library(microbenchmark)
+microbenchmark(a <- rnorm(1000), 
+               b <- mean(rnorm(1000)))
+```
+
+#### Ejemplo 1: Identificar valores superiores al umbral
+
+En este ejemplo se tiene dos funciones que buscan identificar los días cuando la temperatura: 
+
+- la temperatura iguala o excede un umbral de temperatura (e.g., 25ºC) y 
+
+- la temperatura iguala o excede la temperatura más alta registrada antes de ese día.
+
+```{r }
+library(dplyr)
+
+# data
+df_ejemplo <- tibble(date = c("2015-07-01", "2015-07-02",
+                                    "2015-07-03", "2015-07-04",
+                                    "2015-07-05", "2015-07-06",
+                                    "2015-07-07", "2015-07-08"),
+                           temp = c(26.5, 27.2, 28.0, 26.9, 
+                                    27.5, 25.9, 28.0, 28.2)) 
+# Función con for 
+record1 <- function(df, umbral){
+  highest_temp <- c()
+  record_temp <- c()
+  for(i in 1:nrow(df)){
+    highest_temp <- max(highest_temp, df$temp[i])
+    record_temp[i] <- df$temp[i] >= umbral & 
+      df$temp[i] >= highest_temp
+  }
+  df <- cbind(df, record_temp)
+  return(df)
+}
+
+# Función con `%>%` de tidyverse
+record2 <- function(df, umbral){
+  df <- df %>%
+    mutate(over_threshold = temp >= umbral,
+            cummax_temp = temp == cummax(temp),
+            record_temp = over_threshold & cummax_temp) %>%
+    select(-over_threshold, - cummax_temp)
+  return(as.data.frame(df))
+}
+
+(test_1 <- record1(df_ejemplo, 25))
+(test_2 <- record2(df_ejemplo, 25))
+
+all.equal(test_1, test_2) # revisa si todo el contenido es similar
+```
+
+El rendimiento de las dos funciones se puede comparar usando microbenchmark:
+
+```{r eval = TRUE}
+library(microbenchmark)
+recordTemp_rend1 <- microbenchmark(record1(df_ejemplo, 25), 
+                                   record2(df_ejemplo, 25))
+recordTemp_rend1
+```
+
+#### Ejemplo 2: Identificar valores superiores al umbral dataset `chicagoNMMAPS`
+El dataset `chicagoNMMAPS` es parte de la librería `dlnm`. El dataset tiene 14 variables e incluye la temperatura de 15 años en Chicago.
+
+```{r eval = TRUE, message=FALSE}
+library(dlnm)
+data("chicagoNMMAPS")
+str(chicagoNMMAPS)
+
+# Comparación del rendimiento (performance) de los dos tipos de funciones
+recordTemp_rend2 <- microbenchmark(record1(chicagoNMMAPS, 25), 
+                                     record2(chicagoNMMAPS, 25))
+recordTemp_rend2
+```
+
+A continuación se visualiza los resultados del rendimiento de las funciones:
+
+```{r eval = TRUE, message=FALSE}
+library(ggplot2)
+# For small example data
+autoplot(recordTemp_rend1)
+
+# For larger data set
+autoplot(recordTemp_rend2)
+```
+
+## 4.2. Visualizador de tiempos: `profvis`
+La librearía `profvis()` es una hgerramienta que permite visualizar cómo R está utilizando el tiempo al ejecutar un código. 
+
+Una vez que se ha identificado el código cuya ejecución es más lenta, el siguiente paso es comprender que partes del código están causando los cuellos de botella.
+
+La función profvis del paquete del mismo nombre es la herramienta adecuada para esto la cual usa la función RProf base de R y visualiza un entorno interactivo de navegación.
+
+El profiling se efectúa escribiendo los resultados de la pila de llamadas (sentencias) cada 10 milisegundos.
+
+Para usar esta herramienta, únicamente incluya el código en llaves en el caso de tener varias sentencias. Probemos a identificar cual fue el problema con la función `record1`, para ejecutar el profiling:
+
+```{r eval=TRUE}
+library(profvis)
+library(dlnm)
+datafr <- chicagoNMMAPS
+datafr <- rbind(datafr,datafr)
+umbral <- 25
+
+profvis({
+  highest_temp <- c()
+  record_temp <- c()
+  for(i in 1:nrow(datafr)){
+    highest_temp <- max(highest_temp, datafr$temp[i])
+    record_temp[i] <- datafr$temp[i] >= umbral & 
+      datafr$temp[i] >= highest_temp
+  }
+  datafr <- cbind(datafr, record_temp)
+})
+```
+
+La salida de profvis proporciona dos opciones de visualización, "Flame Graph" o "Data".
+
+<br>
+
+<center>
+
+![Ejemplo de la salida de profiling de la función find\_records\_1 en modo de visualización "Flame Graph"](img/profvis_flame.png)
+
+</center>
+
+<br>
+
+<br>
+
+<center>
+
+![Ejemplo de la salida de profiling de la función find\_records\_1 en modo de visualización "Data"](img/profvis_data.png)
+
+</center>
+
+<br>
+
+Otro ejemplo con mayor tiempo de ejecución usando datos sintéticos. Ajuste de una curva y = ax+b
+
+```{r eval=TRUE}
+profvis({			
+  reps <- 10000			
+  n <- 100			
+  beta0 <- 2			
+  beta1 <- .7			
+  
+  save <- vector()			
+  
+  save <- for (i in 1:reps) {			
+    x <- rnorm(n)			
+    y <- beta0 + beta1*x + rnorm(n)			
+    
+    # Redondear a 2 decimales			
+    badinterviewer <- sample(1:n, .25*n, replace = FALSE)			
+    x[badinterviewer] <- ceiling(x[badinterviewer])			
+    
+    y <- matrix(y, ncol = 1)			
+    x <- cbind(1, x)			
+    
+    coef <- .lm.fit(x, y)$coef			
+    save <- c(save, coef[2])			
+  }			
+  save <- data.frame(save)			
+  ggplot(save, aes(x = save)) + geom_density() + geom_vline(xintercept = beta1)			
+})			
+```
+
+Es posible usar el argumento interval para personalizar el intervalo de muestreo (interval = 0.01 -\> 10 milisegundos). Se sugiere evitar el uso de periodos de intervalo muy cortos (e.g., menores a 5 milisegundos). Esto puede provocar resultados no precisos. Incluso si el profiling corresponde a un código muy rápido es mejor utilizar microbenchmark el cual produce resultados más precisos a intervalos más cortos.
+
+# 5. Actividades
+
+## 5.1. Aplicación de `*apply`
+
+Utilice el archivo  `SEST17.csv` que corresponde a los resultados del examen ser estudiante del periodo lectivo 2016-2017. En el análisis aplique `lapply()` para obtener:  
+
+- La separación (split) de los datos por el campo provincia `id_prov`. 
+
+- La desviación estándar de las notas de matemáticas (`imat`) agrupados por el campo provincia `id_prov`.
+
+- Suponga que existe una relación entre las calificación obtenida en Matemáticas con la obtenida en Lengua y Literatura. Aplique una regresión lineal agrupados por el campo provincia `id_prov`. 
+
+- La gráfica de los datos y la recta ajustada a los datos agrupados por el campo provincia `id_prov`.
+
+- Guarde los resultados anteriores en una lista general agrupados por el campo provincia `id_prov`.
+
+## 5.2. Aplicación de `microbenchmark` y `profvis`
+-   Crear un código donde se compare el rendimiento de dos funciones distintas, utilice  `microbenchmark` y `profvis`.
